@@ -49,19 +49,11 @@ def writeTop250(path):
             fichier.write("\n")
             #fichier.write(movie.summary().encode(out_encoding, 'replace'))
     fichier.close()
-# movie_list is a list of Movie objects, with only attributes like 'title'
-# and 'year' defined.
 movie_list = i.search_movie('the passion')
-# the first movie in the list.
 first_match = movie_list[0]
-# only basic information like the title will be printed.
 print first_match.summary()
-# update the information for this movie.
 i.update(first_match)
-# a lot of information will be printed!
-#print first_match.summary()
-# retrieve trivia information and print it.
-#i.update(first_match, 'trivia')
+
 print("-----DEBUT DE NOTRE PARTIE -------")
 def retrieveNmovie(n, path):
     fichier = open(path, "w")
