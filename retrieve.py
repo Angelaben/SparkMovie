@@ -32,6 +32,23 @@ def testIMDB():
                                         movie['long imdb title'])
             print outl.encode(out_encoding, 'replace')
 
+def writeTop250(path):
+    fichier = open(path, "w")
+    top250 = i.get_top250_movies()
+    bottom100 = i.get_bottom100_movies()
+
+    for label, ml in [('top 10', top250), ('bottom 10', bottom100)]:
+        print ''
+        print '%s movies' % label
+        print 'rating\tvotes\ttitle'
+        for movie in ml:
+            outl = u'%s\t%s\t%s' % (movie.get('rating'), movie.get('votes'),
+                                    movie['long imdb title'])
+            print outl.encode(out_encoding, 'replace')
+            fichier.write(outl.encode(out_encoding, 'replace'))
+            fichier.write("\n")
+            #fichier.write(movie.summary().encode(out_encoding, 'replace'))
+    fichier.close()
 # movie_list is a list of Movie objects, with only attributes like 'title'
 # and 'year' defined.
 movie_list = i.search_movie('the passion')
@@ -46,14 +63,18 @@ i.update(first_match)
 # retrieve trivia information and print it.
 #i.update(first_match, 'trivia')
 print("-----DEBUT DE NOTRE PARTIE -------")
-def retrieveNmovie(n):
+def retrieveNmovie(n, path):
+    fichier = open(path, "w")
 
-    for movieID in range (30000, 30000+n):
+    for movieID in range (3000, 3000+n):
 
         movie = i.get_movie(str(movieID))
         outl = u'%s\t%s\t%s' % (movie.get('rating'), movie.get('votes'),
                                 movie['long imdb title'])
-        print outl.encode(out_encoding, 'replace')
-        print movie.summary().encode(out_encoding, 'replace')
-# Calculer la note en divisant le rating par le nombre de vote ?
-retrieveNmovie(10)
+        fichier.write(outl.encode(out_encoding, 'replace'))
+        fichier.write("\n")
+    fichier.close()
+# Calculer la note en multipliant le rating par coefficient lie aux nombres de vote ?
+
+#writeTop250("textFile.txt")
+retrieveNmovie(2000, "Retrieved.txt")
