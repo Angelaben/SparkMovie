@@ -27,12 +27,12 @@ def retrieveData(n, path):
                 listComment.append(elements['content'])
 
             movie["review"] = listComment
-            print(movie)
+
             jsonarray = json.dumps(movie)
             fichier.write(jsonarray)
             fichier.write("\n")
             cpt += 1
-            print("Lecture du ",cpt)
+
         except Exception as err:
             print("not found ", err)
     fichier.close()
@@ -49,20 +49,26 @@ class Producer(threading.Thread):
         producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
         for data in moviesList :
-           # print("Data to produce ", data)
             producer.send("my-topic", json.dumps(data))
-
+        print("Data produced")
 class Consumer(multiprocessing.Process):
     daemon = True
 
     def run(self):
 
+        print("Consumer begin")
         consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-                                 auto_offset_reset='earliest')
+                                 auto_offset_reset='earliest') # Trouverl a definition
         consumer.subscribe(['my-topic'])
-
+        retrievedData = []
         for message in consumer:
-            print("Message recu", message)
+            try :
+
+                msg = json.loads(message.value)
+                retrievedData.append(msg)
+                print("Title received :  %s" % (msg['title']))
+            except Exception as err:
+                print("Error ", err)
 
 
 
@@ -70,8 +76,6 @@ class Consumer(multiprocessing.Process):
 ######################## MAIN PART ############################
 
 tasks = [
-        Producer(),
-        Producer(),
         Producer(),
         Consumer()
 ]
@@ -82,8 +86,7 @@ import json
 moviesList = []
 for line in open('parsed.txt', 'r'):
     moviesList.append(json.loads(line))
-for elem in moviesList:
-    print(elem)
+
 for t in tasks:
     t.start()
 
