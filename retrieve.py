@@ -66,7 +66,6 @@ def retrieveNmovie(n, path):
         fichier.write(outl.encode(out_encoding, 'replace'))
         fichier.write("\n")
     fichier.close()
-# Calculer la note en multipliant le rating par coefficient lie aux nombres de vote ?
 
 #writeTop250("textFile.txt")
 retrieveNmovie(2000, "Retrieved.txt")

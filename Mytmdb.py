@@ -54,6 +54,7 @@ class Producer(threading.Thread):
         for data in moviesList :
             producer.send("my-topic", json.dumps(data))
         print("Data produced")
+        producer.close()
 class Consumer(multiprocessing.Process):
     daemon = True
 
@@ -61,10 +62,11 @@ class Consumer(multiprocessing.Process):
 
         print("Consumer begin")
         consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-                                 auto_offset_reset='earliest') # Trouverl a definition
+                                 auto_offset_reset='earliest', consumer_timeout_ms=1000)
         consumer.subscribe(['my-topic'])
         self.retrievedData = []
         self.nb_elements = 0
+        print(consumer)
         for message in consumer:
             try :
 
@@ -76,6 +78,7 @@ class Consumer(multiprocessing.Process):
             except Exception as err:
                 print("Error ", err)
         print("Consuming done : ",self.nb_elements, " elements")
+        consumer.unsubscribe()
 
 
 ######################## MAIN PART ############################
@@ -94,7 +97,8 @@ for line in open('parsed.txt', 'r'):
 
 for t in tasks:
     t.start()
-
+    time.sleep(1) # Synchro que producer soit avant
+# Set le server properties a true pour le delete, puis lancer la ligne pour vider
 #time.sleep(10)
 
 logging.basicConfig(
