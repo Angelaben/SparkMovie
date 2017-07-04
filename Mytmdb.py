@@ -11,7 +11,7 @@ from nltk.corpus import subjectivity
 from nltk.sentiment import SentimentAnalyzer
 from kafka import KafkaConsumer, KafkaProducer
 
-debug = False
+debug = True
 importer = False
 ##################### PARTIE PARSING DE DONNEE ET TRAITEMENT #############################
 def retrieveData(n, path):
@@ -26,7 +26,7 @@ def retrieveData(n, path):
             reviews = res.reviews()
             listComment = []
             for elements in reviews['results']:
-                #print(elements['content'])
+                print(elements['content'])
                 listComment.append(elements['content'])
 
             movie["review"] = listComment
@@ -77,19 +77,6 @@ class Consumer(multiprocessing.Process):
                 print("Error ", err)
         print("Consuming done : ",self.nb_elements, " elements")
 
-    def consume(self):
-        iteration = 0
-        sentim_analyzer = SentimentAnalyzer()
-        tok_stop = len(self.retrievedData)
-        print("Size ",tok_stop)
-        training_set = self.retrievedData[:tok_stop - self.nb_elements : -1] # Parcourir liste en sens inverse sur
-        # Un certains nombre d'elements car pour l'instant probleme pour vider brokers
-        all_words_neg = sentim_analyzer.all_words([mark_negation(doc) for doc in training_set])
-
-        for elem in self.retrievedData[::-1]:
-            if iteration == self.nb_elements :
-                break # Gerer ce cas tant que j'ai pas trouve comment vider un brokers
-            iteration += 1
 
 ######################## MAIN PART ############################
 
