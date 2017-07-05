@@ -2,8 +2,8 @@ import play.api.libs.json.{JsError, JsSuccess, Json}
 
 object CollectionUtils {
   case class Collection(
-    id: Int,
-    name: String
+    id:   Option[Int],
+    name: Option[String]
   )
 
   implicit val collectionFormat = Json.format[Collection]

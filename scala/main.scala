@@ -23,6 +23,8 @@ object Main {
                   .flatMap(StringToMovie)
 
     lines.foreach(println)
+   // lines.saveAsTextFile("out/")
+  //  lines.foreach(e => println(e.id))
     sc.stop()
     return lines
   }

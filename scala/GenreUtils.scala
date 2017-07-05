@@ -1,9 +1,11 @@
+package test.lol
+
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
 object GenreUtils {
   case class Genre(
-    id: Int,
-    name: String
+    id:   Option[Int],
+    name: Option[String]
   )
 
   implicit val genreFormat = Json.format[Genre]

@@ -2,27 +2,28 @@ package test.lol
 
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
+import test.lol.GenreUtils._
 
 object MovieUtils {
   case class Movie(
-    id: String,
+    adult:           Option[Boolean],
  //   belongs_to_collection: Collection,
-    forAdult: Boolean,
-    budget: Int,
-  //  genre: List[Genre],
-    original_language: String,
-    original_title: String,
-    overview: String,
-    popularity: Float,
-    release_date: Int,
-    revenue: Int,
-    runtime: Int,
-    status: String,
-    tagline: String,
-    title: String,
-    vote_average: Float,
-    vote_count: Int,
-    review: List[String]
+    budget:             Option[Int],
+    genre:              Option[List[Genre]],
+    id:                 Option[String],
+    original_language:  Option[String],
+    original_title:     Option[String],
+    overview:           Option[String],
+    popularity:         Option[Float],
+    release_date:       Option[Int],
+    revenue:            Option[Int],
+    runtime:            Option[Int],
+    status:             Option[String],
+    tagline:            Option[String],
+    title:              Option[String],
+    vote_average:       Option[Float],
+    vote_count:         Option[Int],
+    review:             Option[List[String]]
   )
 
   implicit val movieFormat = Json.format[Movie]
