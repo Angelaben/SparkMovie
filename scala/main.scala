@@ -1,7 +1,7 @@
 package test.lol
 
-import test.lol.MovieUtils
-import test.lol.NewFile
+import test.lol.MovieUtils._
+//import test.lol.NewFile
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd._
@@ -13,7 +13,7 @@ object Main {
     agreg(path)
   }
 
-  def agreg(path: String): RDD[String] = {
+  def agreg(path: String): RDD[Movie] = {
     val conf = new SparkConf().setAppName("SparkMovie")
                               .setMaster("local[*]")
 
@@ -22,6 +22,8 @@ object Main {
     val lines = sc.textFile(path)
                   .flatMap(StringToMovie)
 
+    lines.foreach(println)
+    sc.stop()
     return lines
   }
   //counts.saveAsTextFile("data/wordcountresult.txt")
