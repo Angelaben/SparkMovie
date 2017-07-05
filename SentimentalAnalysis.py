@@ -14,12 +14,29 @@ def loader():
     return moviesList
 def sentimentAnalysis(moviesList):
     sid = SentimentIntensityAnalyzer()
+    returnList = []
+    for review in moviesList:
 
-    for movie in moviesList:
-        print(str(movie['review']))
-        if(movie['review']):
-            ss = sid.polarity_scores(str(movie['review']))
-            for k in sorted(ss):
-                print('{0}: {1}, '.format(k, ss[k]), end='')
-                print()
+        if(review):
+            print("Movie analyzer : ", review)
+            ss = sid.polarity_scores(str(review))
+            print("SS : ",ss['compound'])
+           # for k in sorted(ss):
+            #    print('{0}: {1}, '.format(k, ss[k]))#, end='')
 
+            returnList.append(ss['compound'])
+        else:
+            returnList.append([])
+    return returnList
+def analysis(review):
+    sid = SentimentIntensityAnalyzer()
+    returnList = []
+    if (review):
+        print("Movie analyzer : ", review)
+        ss = sid.polarity_scores(str(review))
+        print("SS : ", ss['compound'])
+
+        returnList.append(ss['compound'])
+    else:
+        returnList.append([])
+    return returnList
