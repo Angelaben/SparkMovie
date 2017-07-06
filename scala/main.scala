@@ -23,9 +23,9 @@ object Main {
                   .flatMap(StringToMovie)
 
     lines.foreach(println)
-   // lines.saveAsTextFile("out/")
+    lines.saveAsTextFile("out/")
   //  lines.foreach(e => println(e.id))
-    sc.stop()
+   // sc.stop()
     return lines
   }
   //counts.saveAsTextFile("data/wordcountresult.txt")
