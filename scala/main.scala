@@ -15,7 +15,7 @@ object Main {
     // Start kafka consumer
     val properties = new Properties()
     properties.put("bootstrap.servers", "localhost:9092")
-    properties.put("group.id", "test")
+    properties.put("group.id", "yyuhr@")
     properties.put("key.deserializer", classOf[StringDeserializer])
     properties.put("value.deserializer", classOf[StringDeserializer])
     properties.put("partition.assignment.strategy", "range")
