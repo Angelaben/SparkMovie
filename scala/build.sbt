@@ -12,9 +12,6 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0"
 
 libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.5.3"
 
-libraryDependencies ++= {
-  Seq(
-    "org.apache.kafka" %% "kafka" % "0.8.2.2",
-    "org.apache.kafka" % "kafka-clients" % "0.8.2.2"
- )
-}
+libraryDependencies += "org.apache.zookeeper" % "zookeeper" % "3.4.8"
+
+libraryDependencies += "org.apache.kafka" % "kafka_2.10" % "0.10.2.1"
