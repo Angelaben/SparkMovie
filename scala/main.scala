@@ -40,11 +40,11 @@ object Main {
     props.put("zookeeper.connect", "localhost:2181")
     props.put("session.timeout.ms", "30000")
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-      "org.apache.kafka.common.serialization.StringDeserializer")
+              "org.apache.kafka.common.serialization.StringDeserializer")
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-      "org.apache.kafka.common.serialization.StringDeserializer")
+              "org.apache.kafka.common.serialization.StringDeserializer")
     props.put("partition.assignment.strategy",
-      "org.apache.kafka.clients.consumer.RangeAssignor")
+              "org.apache.kafka.clients.consumer.RangeAssignor")
     props
   }
 
@@ -66,15 +66,35 @@ object Main {
 
   def Toshow() = {
     println("Show")
+    val conf = new SparkConf().setAppName("testdelamortquitue").setMaster("local[*]")
+    val sc = SparkContext.getOrCreate(conf)
+    val test = sc.textFile("reduced-tweets.json")
+    println("====================================================================")
+    println("====================================================================")
+    println(test.getClass())
+    // class org.apache.spark.rdd.MapPartitionsRDD
+
+    println("====================================================================")
+    println("====================================================================")
     while (true) {
       println("Listening - scala ")
       val records = consumer.poll(1000)
       val it = records.records("my-topic").iterator()
+      var fatLine = ""
       while (it.hasNext) {
         val record = it.next()
         println("Message reçu : " + record.value())
+        fatLine.concat(record.value)
+
+        val newLine = StringToMovie(record.value())
+      //  line.union(newLine)
+        println("====================================================================")
+        println("type d'objet: " + record.value().getClass)
+        println(newLine)
+        println("====================================================================")
       }
       Thread.sleep(2000)
+  //    var rdd = fatLine.flatMap(StringToMovie)
     }
   }
   def main(args: Array[String]): Unit = {
