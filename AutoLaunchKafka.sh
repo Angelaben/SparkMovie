@@ -2,3 +2,8 @@
 /Users/ikuritosensei/kafka/bin/zookeeper-server-start.sh /Users/ikuritosensei/kafka/config/zookeeper.properties
 /Users/ikuritosensei/kafka/bin/kafka-server-start.sh /Users/ikuritosensei/kafka/config/server.properties
 bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic "my-topic"
+bin/kafka-topics.sh \
+  --zookeeper localhost:2181 \
+  --create --topic my-topic \
+  --partitions 10 \
+  --replication-factor 1
