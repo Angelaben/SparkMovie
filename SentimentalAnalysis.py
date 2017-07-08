@@ -42,15 +42,15 @@ def analysis(review):
     return returnList
 from textblob import TextBlob
 from textblob_fr import PatternTagger, PatternAnalyzer
-fichier = open("lol.txt", "r")
-for lines in fichier.readlines():
+#fichier = open("lol.txt", "r")
+#for lines in fichier.readlines():
 
-    print(lines)
-    res = json.loads(lines)
+    #print(lines)
+    #res = json.loads(lines)
 
-    print(res['reviews'])
+    #print(res['reviews'])
     #sentimentAnalysis(res['reviews'])
-    for i in range(50):
-        print(res['reviews'][i])
-        blob = TextBlob(res['reviews'][i], pos_tagger=PatternTagger(), analyzer=PatternAnalyzer())
-        print(blob.sentiment)
+    #for i in range(50):
+      #  print(res['reviews'][i])
+     #   blob = TextBlob(res['reviews'][i], pos_tagger=PatternTagger(), analyzer=PatternAnalyzer())
+       # print(blob.sentiment)
