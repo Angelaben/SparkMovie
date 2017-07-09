@@ -97,7 +97,6 @@ def getMoviesUrls():
     defaultURL = "http://www.allocine.fr/films/alphabetique/"
     defaultHtml = getParsedHTML(defaultURL)
     pages_num = int(defaultHtml.body.find('nav', {'class': 'pagination cf'}).find_all('span')[-1].get_text(' ', strip=True))
- #   print(pages_num)
     threads = []
     nb_threads = 10
     pages_per_thread = pages_num // nb_threads - 1
@@ -310,42 +309,18 @@ class Analyzer(multiprocessing.Process):
         producer.close()
         print("DataAnalyse produced")
 
-      #  producer.close()
 
 ######################## MAIN PART ############################
 
-#tasks = [
 Producer().run()
 Consumer().run()
 Analyzer().run()
-#]
-from pprint import pprint
 
 
-
-#for t in tasks:
- #   t.start()
-  #  time.sleep(1) # Synchro que producer soit avant
-# Set le server properties a true pour le delete, puis lancer la ligne pour vider
-#time.sleep(10)
 
 logging.basicConfig(
         format='%(name)s:%(thread)d:%(process)d:%(message)s',
         level=logging.INFO)
 
-#time.sleep(15)
-print("Testeur d'analyseur :")
-print("Consumer begin")
-#consumerB = KafkaConsumer(bootstrap_servers='localhost:9092',
-    #                     auto_offset_reset='earliest')
-#consumerB.subscribe(['my-ratings'])
-#for message in consumerB:
- #   try:
-  #      msg = json.loads(message.value)
-   #     print("Message recu ", msg)
-    #    if debug:
-     #       print("rating obtained :  %s" % (msg['ownRating']))
 
-    #except Exception as err:
-     #   print("Error ", err)
 print("End")
