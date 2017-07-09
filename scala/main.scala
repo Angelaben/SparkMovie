@@ -54,13 +54,13 @@ object Main {
   def start(): Unit = {
     println("Start")
     val topics : util.List[String] = new util.ArrayList[String]()
-    topics.add("my-topic")
+    topics.add("my-ratings")
     consumer.subscribe(topics)
   }
 
   def toBeginning() = {
     val top = new util.ArrayList[TopicPartition]()
-    top.add(new TopicPartition("my-topic", 2))
+    top.add(new TopicPartition("my-ratings", 2))
     consumer.seekToBeginning(top)
   }
 
@@ -79,7 +79,7 @@ object Main {
     while (true) {
       println("Listening - scala ")
       val records = consumer.poll(1000)
-      val it = records.records("my-topic").iterator()
+      val it = records.records("my-ratings").iterator()
       var fatLine = ""
       while (it.hasNext) {
         val record = it.next()
@@ -93,12 +93,12 @@ object Main {
         println(newLine)
         println("====================================================================")
       }
-      Thread.sleep(2000)
+      Thread.sleep(1)
   //    var rdd = fatLine.flatMap(StringToMovie)
     }
   }
   def main(args: Array[String]): Unit = {
-    println("beboop")
+    println("babidoo")
     start()
     //toBeginning()
     Toshow()

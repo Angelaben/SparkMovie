@@ -228,21 +228,21 @@ class Producer(threading.Thread):
             producer.send("my-topic", json.dumps(data))
         print("Data produced")
         produced = True
+        producer.flush()
         producer.close()
           #  producer.close()
 class Consumer(multiprocessing.Process):
     daemon = True
 
     def run(self):
-        while (not(produced)):
-            time.sleep(1)
+
         print("Consumer begin")
         consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-                                 auto_offset_reset='earliest')
+                                 auto_offset_reset='earliest', consumer_timeout_ms = 100 )
         consumer.subscribe(['my-topic'])
         self.retrievedData = []
         self.nb_elements = 0
-        print(consumer)
+
         for message in consumer:
             try :
 
@@ -254,14 +254,14 @@ class Consumer(multiprocessing.Process):
             except Exception as err:
                 print("Error ", err)
         print("Consuming done : ",self.nb_elements, " elements")
-        consumed = True
+        consumer.unsubscribe()
+        consumer.close()
 
 class Analyzer(multiprocessing.Process):
     daemon = True
 
     def run(self):
-        while(consumed):
-            time.sleep(1)
+
         Myanalyzer = SentimentalAnalysis
 
         print("Analyzer begin")
@@ -285,7 +285,7 @@ class Analyzer(multiprocessing.Process):
                         note += blob.sentiment[0]
                         nbNote += 1
                     note /= nbNote
-                    print("Note obtenu ", note)
+                 #   print("Note obtenu ", note)
                     jsoned['ownRating'] = note
                     moviesList.append(jsoned)
             else :
@@ -305,23 +305,27 @@ class Analyzer(multiprocessing.Process):
             if (debug):
                 print("dataAnalyzer to send ", data)
             producer.send("my-ratings", json.dumps(data))
+            print("Sent")
+        producer.flush()
+        producer.close()
         print("DataAnalyse produced")
+
       #  producer.close()
 
 ######################## MAIN PART ############################
 
-tasks = [
-        Producer(),
-        Consumer(),
-        Analyzer()
-]
+#tasks = [
+Producer().run()
+Consumer().run()
+Analyzer().run()
+#]
 from pprint import pprint
 
 
 
-for t in tasks:
-    t.start()
-    time.sleep(1) # Synchro que producer soit avant
+#for t in tasks:
+ #   t.start()
+  #  time.sleep(1) # Synchro que producer soit avant
 # Set le server properties a true pour le delete, puis lancer la ligne pour vider
 #time.sleep(10)
 
@@ -332,15 +336,16 @@ logging.basicConfig(
 #time.sleep(15)
 print("Testeur d'analyseur :")
 print("Consumer begin")
-consumerB = KafkaConsumer(bootstrap_servers='localhost:9092',
-                         auto_offset_reset='earliest')
-consumerB.subscribe(['my-ratings'])
-for message in consumerB:
-    try:
-        msg = json.loads(message.value)
-        print("Message recu ", msg)
-        if debug:
-            print("rating obtained :  %s" % (msg['ownRating']))
+#consumerB = KafkaConsumer(bootstrap_servers='localhost:9092',
+    #                     auto_offset_reset='earliest')
+#consumerB.subscribe(['my-ratings'])
+#for message in consumerB:
+ #   try:
+  #      msg = json.loads(message.value)
+   #     print("Message recu ", msg)
+    #    if debug:
+     #       print("rating obtained :  %s" % (msg['ownRating']))
 
-    except Exception as err:
-        print("Error ", err)
+    #except Exception as err:
+     #   print("Error ", err)
+print("End")
