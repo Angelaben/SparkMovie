@@ -17,8 +17,8 @@ from nltk.sentiment import SentimentAnalyzer
 from kafka import KafkaConsumer, KafkaProducer
 
 debug = True
-importer = False
-allocine = True
+importer = True
+allocine = False
 ##################### PARTIE PARSING DE DONNEE ET TRAITEMENT  : TMDB    #############################
 def retrieveData(n, path):
     fichier = open(path, "w")

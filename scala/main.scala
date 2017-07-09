@@ -39,11 +39,11 @@ object Main {
     props.put("zookeeper.connect", "localhost:2181")
     props.put("session.timeout.ms", "30000")
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-      "org.apache.kafka.common.serialization.StringDeserializer")
+              "org.apache.kafka.common.serialization.StringDeserializer")
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-      "org.apache.kafka.common.serialization.StringDeserializer")
+              "org.apache.kafka.common.serialization.StringDeserializer")
     props.put("partition.assignment.strategy",
-      "org.apache.kafka.clients.consumer.RangeAssignor")
+              "org.apache.kafka.clients.consumer.RangeAssignor")
     props
   }
 
@@ -53,15 +53,15 @@ object Main {
   def start(): Unit = {
     println("Start")
     val topics : util.List[String] = new util.ArrayList[String]()
-    //topics.add("my-rating")
-    topics.add("my-topic")
+    topics.add("my-rating")
+    //topics.add("my-topic")
     consumer.subscribe(topics)
   }
 
   def toBeginning() = {
     val top = new util.ArrayList[TopicPartition]()
-    top.add(new TopicPartition("my-topic", 2))
-    //top.add(new TopicPartition("my-rating", 2))
+    //top.add(new TopicPartition("my-topic", 2))
+    top.add(new TopicPartition("my-rating", 2))
     consumer.seekToBeginning(top)
   }
 
@@ -79,14 +79,18 @@ object Main {
     println("====================================================================")
     println("====================================================================")
     */
+   new File("testFile.txt").delete()
    while (true) {
+     var hasWritten = false
      var fileWriter = new FileWriter("testFile.txt", true)
      println("Listening - scala ")
 
      val records = consumer.poll(1000)
      var text = ""
-     val it = records.records("my-topic").iterator()
+     //val it = records.records("my-topic").iterator()
+     val it = records.records("my-rating").iterator()
      while (it.hasNext) {
+       hasWritten = true
        val record = it.next()
        fileWriter.write(record.value())
        fileWriter.write("\n")
@@ -101,10 +105,11 @@ object Main {
      fileWriter.close()
      Thread.sleep(1000)
 
-     if (new File("testFile.txt").length() != 0) {
+     if (new File("testFile.txt").length() != 0 && hasWritten == true) {
        println ("parsing:")
        var rdd = sc.textFile("testFile.txt")
-         .flatMap(StringToMovie)
+         .flatMap(StringToRating)
+         //.flatMap(StringToMovie)
          //.flatMap(StringToRating)
 
 
