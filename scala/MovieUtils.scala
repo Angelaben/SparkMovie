@@ -1,8 +1,7 @@
-package scala.movie
+package projet.scala.movie
 
-
+import projet.scala.movie.GenreUtils._
 import play.api.libs.json.{JsError, JsSuccess, Json}
-import test.lol.GenreUtils._
 
 object MovieUtils {
   case class Movie(

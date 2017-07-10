@@ -1,4 +1,4 @@
-package scala.movie
+package projet.scala.movie
 import play.api.libs.json._
 
 object AlloUtils  {

@@ -1,28 +1,28 @@
-package scala.movie
+package projet.scala.movie
 
-import test.lol.AlloUtils._
-import test.lol.RatingUtils._
-import scala.collection.JavaConversions._
-import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.rdd._
-import scala.collection.JavaConverters._
-import java.util.{Collections, Properties}
+import projet.scala.movie.AlloUtils._
+import projet.scala.movie.RatingUtils._
+
 import java.io._
+import java.util
+import java.util.{Collections, Properties}
+
 import kafka.message._
 import kafka.serializer._
 import kafka.utils._
-import java.util.Properties
 import kafka.utils.Logging
-import scala.collection.JavaConversions._
-import java.util
 
-import org.apache.kafka.clients.consumer.{ConsumerConfig, KafkaConsumer, ConsumerRecord}
 import org.apache.kafka.clients.consumer
+import org.apache.kafka.clients.consumer.{ConsumerConfig, KafkaConsumer, ConsumerRecord}
 import org.apache.kafka.common.TopicPartition
+import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.spark.rdd._
+import org.apache.spark.{SparkConf, SparkContext}
+
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 
-import java.util.Properties
 
 object Main {
   /**

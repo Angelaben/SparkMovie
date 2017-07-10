@@ -1,6 +1,6 @@
-package scala.movie
+package projet.scala.movie
 
-import test.lol.GenreUtils._
+import projet.scala.movie.GenreUtils._
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
 object RatingUtils {
