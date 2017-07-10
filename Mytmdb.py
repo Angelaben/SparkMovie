@@ -18,7 +18,7 @@ from kafka import KafkaConsumer, KafkaProducer
 
 debug = True
 importer = False
-allocine = False
+allocine = True
 ##################### PARTIE PARSING DE DONNEE ET TRAITEMENT  : TMDB    #############################
 def retrieveData(n, path):
     fichier = open(path, "w")
@@ -206,7 +206,7 @@ moviesList = []
 
 if allocine :
     for line in open('movies.json', 'r'):
-
+        print("ALLOCINE CALLED ")
         moviesList.append(json.loads(line))
 else : # TMDB
     for line in open('parsed.txt', 'r'):
@@ -279,6 +279,7 @@ class Analyzer(multiprocessing.Process):
 
                 from textblob import TextBlob
                 from textblob_fr import PatternTagger, PatternAnalyzer
+                print(jsoned)
                 if (jsoned['spectators_reviews']):
                     note = 0
                     nbNote = 1
@@ -306,7 +307,7 @@ class Analyzer(multiprocessing.Process):
         for data in moviesList:
             if (debug):
                 print("dataAnalyzer to send ", data)
-            producer.send("my-ratings", json.dumps(data))
+                producer.send("my-ratings", json.dumps(data))
             print("Sent")
         producer.flush()
         producer.close()
