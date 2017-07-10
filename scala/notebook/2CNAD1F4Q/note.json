@@ -1,0 +1,359 @@
+{
+  "paragraphs": [
+    {
+      "user": "anonymous",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1499699039159_558819970",
+      "id": "20170710-170359_1826040666",
+      "dateCreated": "2017-07-10 17:03:59.159",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "\nimport scala.util.parsing.json.JSON\nimport org.apache.spark.SparkContext\nimport org.apache.spark.SparkConf\nimport scala.math._\nimport org.apache.spark.rdd._\n\n  case class Allo (\n                     title:     String,\n                     ownRating : String,\n                     director : String,\n                     spectators_reviews:        String,\n                     date : String,\n                     id : String\n                   ) extends java.io.Serializable\n\n  def parser(movie: String): Map[String, Any] \u003d\n    JSON.parseFull(movie).get.asInstanceOf[Map[String, Any]]\n\n  def exploreMovie(movieList : String) : Allo \u003d  {\n    val json \u003d parser(movieList)\n    Allo(json(\"title\").toString,\n      json(\"ownRating\").toString,\n      json(\"director\").toString,\n      json(\"spectators_reviews\").toString,\n      json(\"date\").toString,\n      json(\"id\").toString\n      )\n  }\n  \n",
+      "user": "anonymous",
+      "dateUpdated": "2017-07-10 16:53:16.642",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "import scala.util.parsing.json.JSON\nimport org.apache.spark.SparkContext\nimport org.apache.spark.SparkConf\nimport scala.math._\nimport org.apache.spark.rdd._\ndefined class Allo\nparser: (movie: String)Map[String,Any]\nexploreMovie: (movieList: String)Allo\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1499619230059_-820156872",
+      "id": "20170709-185350_661804806",
+      "dateCreated": "2017-07-09 18:53:50.059",
+      "dateStarted": "2017-07-10 16:53:16.665",
+      "dateFinished": "2017-07-10 16:53:20.875",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": " val pathToFile \u003d \"/Users/ikuritosensei/PycharmProjects/SPark/scala/testFile.txt\"\n    // Load the data and parse it into a Movie.\nval listMovie \u003d sc.textFile(pathToFile).map(exploreMovie)\nval rddSql \u003d listMovie.toDF()\nrddSql.registerTempTable(\"records\")\n",
+      "user": "anonymous",
+      "dateUpdated": "2017-07-10 16:53:18.376",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 90.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala",
+        "lineNumbers": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "pathToFile: String \u003d /Users/ikuritosensei/PycharmProjects/SPark/scala/testFile.txt\nlistMovie: org.apache.spark.rdd.RDD[Allo] \u003d MapPartitionsRDD[85] at map at \u003cconsole\u003e:103\nrddSql: org.apache.spark.sql.DataFrame \u003d [title: string, ownRating: string ... 4 more fields]\nwarning: there were 1 deprecation warning(s); re-run with -deprecation for details\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1499619339839_-936565579",
+      "id": "20170709-185539_2017656487",
+      "dateCreated": "2017-07-09 18:55:39.839",
+      "dateStarted": "2017-07-10 16:53:18.396",
+      "dateFinished": "2017-07-10 16:53:23.108",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect director, ownRating\nfrom records \n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2017-07-10 17:05:44.717",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "lineChart",
+              "height": 334.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "director": "string",
+                      "ownRating": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "director",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "ownRating",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "director\townRating\nMai Masri\t0.18469548200337674\nPeter Werner\t0.15003416347381862\nJudd Apatow\t0.13101605108975214\nYan England\t0.0950881862858587\nLucien Jean-Baptiste\t0.055680213568633445\nRenny Harlin\t0.1650669594799816\nRichard Pottier\t0.17166666666666663\nThomas Stiller\t0.13853068883277214\nThi Bach Tuyet\t0.05455357142857143\nMichael Lehmann\t0.07655922170063661\nAnthony Fankhauser\t0.04203770471563121\nStéphane Vuillet\t0.11563166666666667\nDominic Polcino\t0.025128472222222222\nJudd Apatow\t0.02027090032812016\nVladimir Khotinenko\t0.11754871242230827\nGeorges Méliès\t0.21909536509286548\nPhilip Dunne\t0.11858552631578949\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nHenri Verneuil\t0.2540557471145707\nDusan Hanak\t0.06781250000000001\nJacques Daniel-Norman\t0.06448412698412699\nMai Masri\t0.18469548200337674\nSi-myung Lee\t0.18256199788293212\nPeter Werner\t0.15003416347381862\nGeorges Méliès\t0.21909536509286548\nPhilip Dunne\t0.11858552631578949\nTrey Stokes\t0.0763717320261438\nAnne Fletcher\t0.2903039450995452\nLucien Jean-Baptiste\t0.055680213568633445\nMilton Katselas\t0.027750000000000007\nRichard Pottier\t0.17166666666666663\nRoland Emmerich\t0.10618457113253277\nHenri Verneuil\t0.2540557471145707\nSébastien Betbeder\t0.18502229090054348\nSteve McQueen (II)\t0.13524592896628537\nNick Everhart\t0.005326080630662021\nStéphane Vuillet\t0.11563166666666667\nDominic Polcino\t0.025128472222222222\nVladimir Khotinenko\t0.11754871242230827\nIouri Tcherenkov\t0.17313179226046876\nSherry Hormann\t0.10989755043254393\nDelphine Kreuter\t0.13862586264717228\nRenny Harlin\t0.06835082748792427\nGeorges Méliès\t0.21909536509286548\nYan England\t0.0950881862858587\nLucien Jean-Baptiste\t0.055680213568633445\nRichard Pottier\t0.17166666666666663\nHenri Verneuil\t0.2540557471145707\nThi Bach Tuyet\t0.05455357142857143\nSébastien Betbeder\t0.18502229090054348\nNick Everhart\t0.005326080630662021\nStéphane Vuillet\t0.11563166666666667\nPeter Hyams\t0.15159710087255832\nDelphine Kreuter\t0.13862586264717228\nPhilip Dunne\t0.11858552631578949\nRoel Reiné\t0.14012532300932068\nLucien Jean-Baptiste\t0.055680213568633445\nBurr Steers\t0.13938265813638923\nRenny Harlin\t0.1650669594799816\nThomas Stiller\t0.13853068883277214\nSi-myung Lee\t0.18256199788293212\nLaurent Bouhnik\t0.11053571428571429\nSherry Hormann\t0.10989755043254393\nDelphine Kreuter\t0.13862586264717228\nRenny Harlin\t0.06835082748792427\nTrey Stokes\t0.0763717320261438\nSteve McQueen (II)\t0.13524592896628537\nNicolai Rohde\t0.05399999999999999\nStéphane Vuillet\t0.11563166666666667\nJudd Apatow\t0.02027090032812016\nLaurent Bouhnik\t0.11053571428571429\nPeter Hyams\t0.15159710087255832\nJudd Apatow\t0.13101605108975214\nRoel Reiné\t0.14012532300932068\nBurr Steers\t0.13938265813638923\nRenny Harlin\t0.1650669594799816\nThomas Stiller\t0.13853068883277214\nJon Favreau\t0.15539776570482725\nDusan Hanak\t0.06781250000000001\nAnthony Fankhauser\t0.04203770471563121\nDanny Boyle\t0.10111924020710218\nSi-myung Lee\t0.18256199788293212\nPeter Werner\t0.15003416347381862\nLaurent Bouhnik\t0.11053571428571429\nPhilip Dunne\t0.11858552631578949\nTrey Stokes\t0.0763717320261438\nMilton Katselas\t0.027750000000000007\nCarlos Marques-Marcet\t0.22760656010656014\nRoland Emmerich\t0.10618457113253277\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nAnthony Fankhauser\t0.04203770471563121\nSteve McQueen (II)\t0.13524592896628537\nMuriel Coulin\t0.015569675881352977\nJacques Daniel-Norman\t0.06448412698412699\nNicolai Rohde\t0.05399999999999999\nSi-myung Lee\t0.18256199788293212\nJudd Apatow\t0.02027090032812016\nLaurent Bouhnik\t0.11053571428571429\nDanny Boyle\t0.10111924020710218\nPeter Werner\t0.15003416347381862\nPeter Hyams\t0.15159710087255832\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nCarlos Marques-Marcet\t0.22760656010656014\nThomas Stiller\t0.13853068883277214\nJon Favreau\t0.15539776570482725\nSteve McQueen (II)\t0.13524592896628537\nDominic Polcino\t0.025128472222222222\nDelphine Kreuter\t0.13862586264717228\nJudd Apatow\t0.13101605108975214\nLucien Jean-Baptiste\t0.055680213568633445\nAnthony Fankhauser\t0.04203770471563121\nDominic Polcino\t0.025128472222222222\nPhilip Dunne\t0.11858552631578949\nAnne Fletcher\t0.2903039450995452\nLucien Jean-Baptiste\t0.055680213568633445\nBurr Steers\t0.13938265813638923\nRenny Harlin\t0.1650669594799816\nRichard Pottier\t0.17166666666666663\nJon Favreau\t0.15539776570482725\nSébastien Betbeder\t0.18502229090054348\nMichael Lehmann\t0.07655922170063661\nMuriel Coulin\t0.015569675881352977\nJacques Daniel-Norman\t0.06448412698412699\nStéphane Vuillet\t0.11563166666666667\nDominic Polcino\t0.025128472222222222\nPeter Hyams\t0.15159710087255832\nRoel Reiné\t0.14012532300932068\nCarlos Marques-Marcet\t0.22760656010656014\nHenri Verneuil\t0.2540557471145707\nThi Bach Tuyet\t0.05455357142857143\nBetty Thomas\t0.16366471995746193\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nSteve McQueen (II)\t0.13524592896628537\nNicolai Rohde\t0.05399999999999999\nSi-myung Lee\t0.18256199788293212\nNick Everhart\t0.005326080630662021\nDominic Polcino\t0.025128472222222222\nVladimir Khotinenko\t0.11754871242230827\nIouri Tcherenkov\t0.17313179226046876\nSherry Hormann\t0.10989755043254393\nDelphine Kreuter\t0.13862586264717228\nYan England\t0.0950881862858587\nCarlos Marques-Marcet\t0.22760656010656014\nThi Bach Tuyet\t0.05455357142857143\nJacques Daniel-Norman\t0.06448412698412699\nNicolai Rohde\t0.05399999999999999\nJudd Apatow\t0.02027090032812016\nPeter Hyams\t0.15159710087255832\nJon Favreau\t0.15539776570482725\nRamón Salazar\t-0.09000000000000001\nBetty Thomas\t0.16366471995746193\nMai Masri\t0.18469548200337674\nSherry Hormann\t0.10989755043254393\nRenny Harlin\t0.06835082748792427\nGeorges Méliès\t0.21909536509286548\nTrey Stokes\t0.0763717320261438\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nMilton Katselas\t0.027750000000000007\nRichard Pottier\t0.17166666666666663\nNicolai Rohde\t0.05399999999999999\nIouri Tcherenkov\t0.17313179226046876\nPeter Hyams\t0.15159710087255832\nAnne Fletcher\t0.2903039450995452\nRoel Reiné\t0.14012532300932068\nCarlos Marques-Marcet\t0.22760656010656014\nRoland Emmerich\t0.10618457113253277\nJon Favreau\t0.15539776570482725\nRamón Salazar\t-0.09000000000000001\nSébastien Betbeder\t0.18502229090054348\nBetty Thomas\t0.16366471995746193\nMuriel Coulin\t0.015569675881352977\nDanny Boyle\t0.10111924020710218\nRenny Harlin\t0.06835082748792427\nRamón Salazar\t-0.09000000000000001\nBetty Thomas\t0.16366471995746193\nMichael Lehmann\t0.07655922170063661\nMuriel Coulin\t0.015569675881352977\nMai Masri\t0.18469548200337674\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nRoel Reiné\t0.14012532300932068\nBurr Steers\t0.13938265813638923\nRenny Harlin\t0.1650669594799816\nThomas Stiller\t0.13853068883277214\nDanny Boyle\t0.10111924020710218\nDominic Polcino\t0.025128472222222222\nVladimir Khotinenko\t0.11754871242230827\nPeter Werner\t0.15003416347381862\nIouri Tcherenkov\t0.17313179226046876\nYan England\t0.0950881862858587\nRoland Emmerich\t0.10618457113253277\nRamón Salazar\t-0.09000000000000001\nAnthony Fankhauser\t0.04203770471563121\nMuriel Coulin\t0.015569675881352977\nJacques Daniel-Norman\t0.06448412698412699\nStéphane Vuillet\t0.11563166666666667\nMai Masri\t0.18469548200337674\nIouri Tcherenkov\t0.17313179226046876\nSherry Hormann\t0.10989755043254393\nTrey Stokes\t0.0763717320261438\nYan England\t0.0950881862858587\nRoel Reiné\t0.14012532300932068\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nRichard Pottier\t0.17166666666666663\nRoland Emmerich\t0.10618457113253277\nHenri Verneuil\t0.2540557471145707\nRamón Salazar\t-0.09000000000000001\nBetty Thomas\t0.16366471995746193\nNick Everhart\t0.005326080630662021\nStéphane Vuillet\t0.11563166666666667\nJudd Apatow\t0.02027090032812016\nVladimir Khotinenko\t0.11754871242230827\nPeter Werner\t0.15003416347381862\nSherry Hormann\t0.10989755043254393\nGeorges Méliès\t0.21909536509286548\nPhilip Dunne\t0.11858552631578949\nTrey Stokes\t0.0763717320261438\nCarlos Marques-Marcet\t0.22760656010656014\nRoland Emmerich\t0.10618457113253277\nHenri Verneuil\t0.2540557471145707\nBetty Thomas\t0.16366471995746193\nDusan Hanak\t0.06781250000000001\nDanny Boyle\t0.10111924020710218\nNicolai Rohde\t0.05399999999999999\nMai Masri\t0.18469548200337674\nSi-myung Lee\t0.18256199788293212\nLaurent Bouhnik\t0.11053571428571429\nSherry Hormann\t0.10989755043254393\nPeter Hyams\t0.15159710087255832\nGeorges Méliès\t0.21909536509286548\nTrey Stokes\t0.0763717320261438\nHenri Verneuil\t0.2540557471145707\nNicolai Rohde\t0.05399999999999999\nMai Masri\t0.18469548200337674\nVladimir Khotinenko\t0.11754871242230827\nGeorges Méliès\t0.21909536509286548\nJon Favreau\t0.15539776570482725\nSébastien Betbeder\t0.18502229090054348\nNick Everhart\t0.005326080630662021\nRenny Harlin\t0.06835082748792427\nGeorges Méliès\t0.21909536509286548\nPhilip Dunne\t0.11858552631578949\nLucien Jean-Baptiste\t0.055680213568633445\nRenny Harlin\t0.1650669594799816\nSébastien Betbeder\t0.18502229090054348\nMuriel Coulin\t0.015569675881352977\nLaurent Bouhnik\t0.11053571428571429\nRenny Harlin\t0.06835082748792427\nAnne Fletcher\t0.2903039450995452\nYan England\t0.0950881862858587\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nThomas Stiller\t0.13853068883277214\nJon Favreau\t0.15539776570482725\nSteve McQueen (II)\t0.13524592896628537\nMuriel Coulin\t0.015569675881352977\nStéphane Vuillet\t0.11563166666666667\nJudd Apatow\t0.02027090032812016\nPeter Werner\t0.15003416347381862\nIouri Tcherenkov\t0.17313179226046876\nJudd Apatow\t0.13101605108975214\nYan England\t0.0950881862858587\nRoland Emmerich\t0.10618457113253277\nThi Bach Tuyet\t0.05455357142857143\nBetty Thomas\t0.16366471995746193\nJon Favreau\t0.15539776570482725\nHenri Verneuil\t0.2540557471145707\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nMilton Katselas\t0.027750000000000007\nCarlos Marques-Marcet\t0.22760656010656014\nSteve McQueen (II)\t0.13524592896628537\nMuriel Coulin\t0.015569675881352977\nJacques Daniel-Norman\t0.06448412698412699\nSi-myung Lee\t0.18256199788293212\nDominic Polcino\t0.025128472222222222\nJudd Apatow\t0.02027090032812016\nVladimir Khotinenko\t0.11754871242230827\nSherry Hormann\t0.10989755043254393\nDelphine Kreuter\t0.13862586264717228\nRenny Harlin\t0.06835082748792427\nPhilip Dunne\t0.11858552631578949\nMilton Katselas\t0.027750000000000007\nCarlos Marques-Marcet\t0.22760656010656014\nRoland Emmerich\t0.10618457113253277\nThi Bach Tuyet\t0.05455357142857143\nSébastien Betbeder\t0.18502229090054348\nBetty Thomas\t0.16366471995746193\nDusan Hanak\t0.06781250000000001\nDanny Boyle\t0.10111924020710218\nStéphane Vuillet\t0.11563166666666667\nVladimir Khotinenko\t0.11754871242230827\nDelphine Kreuter\t0.13862586264717228\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nRenny Harlin\t0.1650669594799816\nJon Favreau\t0.15539776570482725\nAnthony Fankhauser\t0.04203770471563121\nNick Everhart\t0.005326080630662021\nStéphane Vuillet\t0.11563166666666667\nSi-myung Lee\t0.18256199788293212\nDominic Polcino\t0.025128472222222222\nVladimir Khotinenko\t0.11754871242230827\nSherry Hormann\t0.10989755043254393\nPhilip Dunne\t0.11858552631578949\nRoel Reiné\t0.14012532300932068\nSteve McQueen (II)\t0.13524592896628537\nNick Everhart\t0.005326080630662021\nJudd Apatow\t0.02027090032812016\nLaurent Bouhnik\t0.11053571428571429\nRenny Harlin\t0.06835082748792427\nTrey Stokes\t0.0763717320261438\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nYan England\t0.0950881862858587\nLucien Jean-Baptiste\t0.055680213568633445\nRenny Harlin\t0.1650669594799816\nRichard Pottier\t0.17166666666666663\nCarlos Marques-Marcet\t0.22760656010656014\nThomas Stiller\t0.13853068883277214\nThi Bach Tuyet\t0.05455357142857143\nRamón Salazar\t-0.09000000000000001\nBetty Thomas\t0.16366471995746193\nMichael Lehmann\t0.07655922170063661\nSteve McQueen (II)\t0.13524592896628537\nDanny Boyle\t0.10111924020710218\nStéphane Vuillet\t0.11563166666666667\nDominic Polcino\t0.025128472222222222\nVladimir Khotinenko\t0.11754871242230827\nIouri Tcherenkov\t0.17313179226046876\nSherry Hormann\t0.10989755043254393\nTrey Stokes\t0.0763717320261438\nYan England\t0.0950881862858587\nBurr Steers\t0.13938265813638923\nRenny Harlin\t0.1650669594799816\nRichard Pottier\t0.17166666666666663\nRoland Emmerich\t0.10618457113253277\nThi Bach Tuyet\t0.05455357142857143\nRamón Salazar\t-0.09000000000000001\nAnthony Fankhauser\t0.04203770471563121\nNick Everhart\t0.005326080630662021\nStéphane Vuillet\t0.11563166666666667\nJudd Apatow\t0.13101605108975214\nRoel Reiné\t0.14012532300932068\nRenny Harlin\t0.1650669594799816\nHenri Verneuil\t0.2540557471145707\nRamón Salazar\t-0.09000000000000001\nMichael Lehmann\t0.07655922170063661\nThomas Stiller\t0.13853068883277214\nThi Bach Tuyet\t0.05455357142857143\nSébastien Betbeder\t0.18502229090054348\nMichael Lehmann\t0.07655922170063661\nAnthony Fankhauser\t0.04203770471563121\nNicolai Rohde\t0.05399999999999999\nStéphane Vuillet\t0.11563166666666667\nJudd Apatow\t0.02027090032812016\nVladimir Khotinenko\t0.11754871242230827\nLaurent Bouhnik\t0.11053571428571429\nGeorges Méliès\t0.21909536509286548\nLucien Jean-Baptiste\t0.055680213568633445\nRichard Pottier\t0.17166666666666663\nSébastien Betbeder\t0.18502229090054348\nBetty Thomas\t0.16366471995746193\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nMuriel Coulin\t0.015569675881352977\nDanny Boyle\t0.10111924020710218\nStéphane Vuillet\t0.11563166666666667\nVladimir Khotinenko\t0.11754871242230827\nPeter Werner\t0.15003416347381862\nSherry Hormann\t0.10989755043254393\nRenny Harlin\t0.06835082748792427\nTrey Stokes\t0.0763717320261438\nLucien Jean-Baptiste\t0.055680213568633445\nJon Favreau\t0.15539776570482725\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nDanny Boyle\t0.10111924020710218\nJacques Daniel-Norman\t0.06448412698412699\nMai Masri\t0.18469548200337674\nSi-myung Lee\t0.18256199788293212\nPeter Werner\t0.15003416347381862\nSherry Hormann\t0.10989755043254393\nPeter Hyams\t0.15159710087255832\nDelphine Kreuter\t0.13862586264717228\nGeorges Méliès\t0.21909536509286548\nPhilip Dunne\t0.11858552631578949\nRoel Reiné\t0.14012532300932068\nMuriel Coulin\t0.015569675881352977\nJacques Daniel-Norman\t0.06448412698412699\nMai Masri\t0.18469548200337674\nDominic Polcino\t0.025128472222222222\nJudd Apatow\t0.02027090032812016\nLaurent Bouhnik\t0.11053571428571429\nIouri Tcherenkov\t0.17313179226046876\nSherry Hormann\t0.10989755043254393\nPeter Hyams\t0.15159710087255832\nRenny Harlin\t0.06835082748792427\nPhilip Dunne\t0.11858552631578949\nLucien Jean-Baptiste\t0.055680213568633445\nBurr Steers\t0.13938265813638923\nRichard Pottier\t0.17166666666666663\nThomas Stiller\t0.13853068883277214\nThi Bach Tuyet\t0.05455357142857143\nSébastien Betbeder\t0.18502229090054348\nDusan Hanak\t0.06781250000000001\nSteve McQueen (II)\t0.13524592896628537\nMuriel Coulin\t0.015569675881352977\nNicolai Rohde\t0.05399999999999999\nJudd Apatow\t0.02027090032812016\nPeter Hyams\t0.15159710087255832\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nRichard Pottier\t0.17166666666666663\nBetty Thomas\t0.16366471995746193\nDominic Polcino\t0.025128472222222222\nPeter Werner\t0.15003416347381862\nIouri Tcherenkov\t0.17313179226046876\nDelphine Kreuter\t0.13862586264717228\nRenny Harlin\t0.06835082748792427\nRoel Reiné\t0.14012532300932068\nRenny Harlin\t0.1650669594799816\nThomas Stiller\t0.13853068883277214\nRoland Emmerich\t0.10618457113253277\nThi Bach Tuyet\t0.05455357142857143\nRamón Salazar\t-0.09000000000000001\nAnthony Fankhauser\t0.04203770471563121\nMai Masri\t0.18469548200337674\nDominic Polcino\t0.025128472222222222\nIouri Tcherenkov\t0.17313179226046876\nDelphine Kreuter\t0.13862586264717228\nGeorges Méliès\t0.21909536509286548\nAnne Fletcher\t0.2903039450995452\nYan England\t0.0950881862858587\nRoel Reiné\t0.14012532300932068\nRoland Emmerich\t0.10618457113253277\nRamón Salazar\t-0.09000000000000001\nSébastien Betbeder\t0.18502229090054348\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nSteve McQueen (II)\t0.13524592896628537\nMuriel Coulin\t0.015569675881352977\nNick Everhart\t0.005326080630662021\nJacques Daniel-Norman\t0.06448412698412699\nNicolai Rohde\t0.05399999999999999\nStéphane Vuillet\t0.11563166666666667\nJudd Apatow\t0.02027090032812016\nSherry Hormann\t0.10989755043254393\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nRichard Pottier\t0.17166666666666663\nHenri Verneuil\t0.2540557471145707\nBetty Thomas\t0.16366471995746193\nMuriel Coulin\t0.015569675881352977\nPeter Werner\t0.15003416347381862\nJudd Apatow\t0.13101605108975214\nRoel Reiné\t0.14012532300932068\nThomas Stiller\t0.13853068883277214\nSteve McQueen (II)\t0.13524592896628537\nSherry Hormann\t0.10989755043254393\nGeorges Méliès\t0.21909536509286548\nPhilip Dunne\t0.11858552631578949\nYan England\t0.0950881862858587\nRoland Emmerich\t0.10618457113253277\nThi Bach Tuyet\t0.05455357142857143\nDusan Hanak\t0.06781250000000001\nRichard Pottier\t0.17166666666666663\nCarlos Marques-Marcet\t0.22760656010656014\nThi Bach Tuyet\t0.05455357142857143\nSébastien Betbeder\t0.18502229090054348\nBetty Thomas\t0.16366471995746193\nDominic Polcino\t0.025128472222222222\nYan England\t0.0950881862858587\nLucien Jean-Baptiste\t0.055680213568633445\nCarlos Marques-Marcet\t0.22760656010656014\nThomas Stiller\t0.13853068883277214\nBetty Thomas\t0.16366471995746193\nAnthony Fankhauser\t0.04203770471563121\nDanny Boyle\t0.10111924020710218\nMai Masri\t0.18469548200337674\nDominic Polcino\t0.025128472222222222\nPeter Werner\t0.15003416347381862\nLaurent Bouhnik\t0.11053571428571429\nPeter Hyams\t0.15159710087255832\nRenny Harlin\t0.06835082748792427\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nYan England\t0.0950881862858587\nThomas Stiller\t0.13853068883277214\nRoland Emmerich\t0.10618457113253277\nJon Favreau\t0.15539776570482725\nMichael Lehmann\t0.07655922170063661\nAnthony Fankhauser\t0.04203770471563121\nLaurent Bouhnik\t0.11053571428571429\nSherry Hormann\t0.10989755043254393\nRenny Harlin\t0.06835082748792427\nPhilip Dunne\t0.11858552631578949\nYan England\t0.0950881862858587\nLucien Jean-Baptiste\t0.055680213568633445\nBurr Steers\t0.13938265813638923\nRenny Harlin\t0.1650669594799816\nCarlos Marques-Marcet\t0.22760656010656014\nThi Bach Tuyet\t0.05455357142857143\nRamón Salazar\t-0.09000000000000001\nSébastien Betbeder\t0.18502229090054348\nJacques Daniel-Norman\t0.06448412698412699\nNicolai Rohde\t0.05399999999999999\nPeter Hyams\t0.15159710087255832\nDelphine Kreuter\t0.13862586264717228\nJudd Apatow\t0.13101605108975214\nRoel Reiné\t0.14012532300932068\nRenny Harlin\t0.1650669594799816\nCarlos Marques-Marcet\t0.22760656010656014\nHenri Verneuil\t0.2540557471145707\nSteve McQueen (II)\t0.13524592896628537\nDominic Polcino\t0.025128472222222222\nJudd Apatow\t0.02027090032812016\nVladimir Khotinenko\t0.11754871242230827\nLaurent Bouhnik\t0.11053571428571429\nDelphine Kreuter\t0.13862586264717228\nThi Bach Tuyet\t0.05455357142857143\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nAnthony Fankhauser\t0.04203770471563121\nDanny Boyle\t0.10111924020710218\nJacques Daniel-Norman\t0.06448412698412699\nNicolai Rohde\t0.05399999999999999\nMai Masri\t0.18469548200337674\nSi-myung Lee\t0.18256199788293212\nIouri Tcherenkov\t0.17313179226046876\nPeter Hyams\t0.15159710087255832\nRoel Reiné\t0.14012532300932068\nRenny Harlin\t0.1650669594799816\nRichard Pottier\t0.17166666666666663\nThi Bach Tuyet\t0.05455357142857143\nRamón Salazar\t-0.09000000000000001\nSébastien Betbeder\t0.18502229090054348\nMichael Lehmann\t0.07655922170063661\nNick Everhart\t0.005326080630662021\nJacques Daniel-Norman\t0.06448412698412699\nVladimir Khotinenko\t0.11754871242230827\nDelphine Kreuter\t0.13862586264717228\nRenny Harlin\t0.06835082748792427\nRoel Reiné\t0.14012532300932068\nMilton Katselas\t0.027750000000000007\nCarlos Marques-Marcet\t0.22760656010656014\nThomas Stiller\t0.13853068883277214\nRamón Salazar\t-0.09000000000000001\nDusan Hanak\t0.06781250000000001\nAnthony Fankhauser\t0.04203770471563121\nRoland Emmerich\t0.10618457113253277\nAnthony Fankhauser\t0.04203770471563121\nMuriel Coulin\t0.015569675881352977\nNick Everhart\t0.005326080630662021\nNicolai Rohde\t0.05399999999999999\nJudd Apatow\t0.02027090032812016\nPeter Werner\t0.15003416347381862\nLaurent Bouhnik\t0.11053571428571429\nPeter Hyams\t0.15159710087255832\nDelphine Kreuter\t0.13862586264717228\nGeorges Méliès\t0.21909536509286548\nRoel Reiné\t0.14012532300932068\nLucien Jean-Baptiste\t0.055680213568633445\nThomas Stiller\t0.13853068883277214\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nMai Masri\t0.18469548200337674\nPeter Hyams\t0.15159710087255832\nAnne Fletcher\t0.2903039450995452\nRichard Pottier\t0.17166666666666663\nAnthony Fankhauser\t0.04203770471563121\nNick Everhart\t0.005326080630662021\nSi-myung Lee\t0.18256199788293212\nGeorges Méliès\t0.21909536509286548\nTrey Stokes\t0.0763717320261438\nRoel Reiné\t0.14012532300932068\nMilton Katselas\t0.027750000000000007\nRoland Emmerich\t0.10618457113253277\nMichael Lehmann\t0.07655922170063661\nJacques Daniel-Norman\t0.06448412698412699\nPeter Werner\t0.15003416347381862\nLaurent Bouhnik\t0.11053571428571429\nIouri Tcherenkov\t0.17313179226046876\nGeorges Méliès\t0.21909536509286548\nTrey Stokes\t0.0763717320261438\nYan England\t0.0950881862858587\nDanny Boyle\t0.10111924020710218\nSi-myung Lee\t0.18256199788293212\nPeter Werner\t0.15003416347381862\nIouri Tcherenkov\t0.17313179226046876\nSherry Hormann\t0.10989755043254393\nDelphine Kreuter\t0.13862586264717228\nPhilip Dunne\t0.11858552631578949\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nSébastien Betbeder\t0.18502229090054348\nDusan Hanak\t0.06781250000000001\nJacques Daniel-Norman\t0.06448412698412699\nMai Masri\t0.18469548200337674\nSi-myung Lee\t0.18256199788293212\nRenny Harlin\t0.06835082748792427\nPhilip Dunne\t0.11858552631578949\nJon Favreau\t0.15539776570482725\nHenri Verneuil\t0.2540557471145707\nSébastien Betbeder\t0.18502229090054348\nBetty Thomas\t0.16366471995746193\nDanny Boyle\t0.10111924020710218\nNicolai Rohde\t0.05399999999999999\nPeter Werner\t0.15003416347381862\nLaurent Bouhnik\t0.11053571428571429\nIouri Tcherenkov\t0.17313179226046876\nGeorges Méliès\t0.21909536509286548\nTrey Stokes\t0.0763717320261438\nYan England\t0.0950881862858587\nLucien Jean-Baptiste\t0.055680213568633445\nBurr Steers\t0.13938265813638923\nThomas Stiller\t0.13853068883277214\nJon Favreau\t0.15539776570482725\nRenny Harlin\t0.1650669594799816\nHenri Verneuil\t0.2540557471145707\nDusan Hanak\t0.06781250000000001\nSteve McQueen (II)\t0.13524592896628537\nMuriel Coulin\t0.015569675881352977\nDanny Boyle\t0.10111924020710218\nNick Everhart\t0.005326080630662021\nSi-myung Lee\t0.18256199788293212\nPeter Hyams\t0.15159710087255832\nTrey Stokes\t0.0763717320261438\nAnne Fletcher\t0.2903039450995452\nYan England\t0.0950881862858587\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nCarlos Marques-Marcet\t0.22760656010656014\nSteve McQueen (II)\t0.13524592896628537\nNick Everhart\t0.005326080630662021\nJacques Daniel-Norman\t0.06448412698412699\nLaurent Bouhnik\t0.11053571428571429\nPeter Hyams\t0.15159710087255832\nBurr Steers\t0.13938265813638923\nRoland Emmerich\t0.10618457113253277\nHenri Verneuil\t0.2540557471145707\nRamón Salazar\t-0.09000000000000001\nAnthony Fankhauser\t0.04203770471563121\nNick Everhart\t0.005326080630662021\nNicolai Rohde\t0.05399999999999999\nVladimir Khotinenko\t0.11754871242230827\nLaurent Bouhnik\t0.11053571428571429\nRenny Harlin\t0.06835082748792427\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nSteve McQueen (II)\t0.13524592896628537\nNicolai Rohde\t0.05399999999999999\nPeter Werner\t0.15003416347381862\nYan England\t0.0950881862858587\nCarlos Marques-Marcet\t0.22760656010656014\nHenri Verneuil\t0.2540557471145707\nRamón Salazar\t-0.09000000000000001\nBetty Thomas\t0.16366471995746193\nDanny Boyle\t0.10111924020710218\nMai Masri\t0.18469548200337674\nDelphine Kreuter\t0.13862586264717228\nRenny Harlin\t0.06835082748792427\nJudd Apatow\t0.13101605108975214\nAnne Fletcher\t0.2903039450995452\nLucien Jean-Baptiste\t0.055680213568633445\nCarlos Marques-Marcet\t0.22760656010656014\nRoland Emmerich\t0.10618457113253277\nJon Favreau\t0.15539776570482725\nRamón Salazar\t-0.09000000000000001\nJacques Daniel-Norman\t0.06448412698412699\nMai Masri\t0.18469548200337674\nSherry Hormann\t0.10989755043254393\nPhilip Dunne\t0.11858552631578949\nJudd Apatow\t0.13101605108975214\nJon Favreau\t0.15539776570482725\nHenri Verneuil\t0.2540557471145707\nNicolai Rohde\t0.05399999999999999\nSi-myung Lee\t0.18256199788293212\nJudd Apatow\t0.02027090032812016\nPhilip Dunne\t0.11858552631578949\nJudd Apatow\t0.13101605108975214\nBurr Steers\t0.13938265813638923\nRenny Harlin\t0.1650669594799816\nJon Favreau\t0.15539776570482725\nHenri Verneuil\t0.2540557471145707\nThi Bach Tuyet\t0.05455357142857143\nSi-myung Lee\t0.18256199788293212\nVladimir Khotinenko\t0.11754871242230827\nIouri Tcherenkov\t0.17313179226046876\nDelphine Kreuter\t0.13862586264717228\nLucien Jean-Baptiste\t0.055680213568633445\nCarlos Marques-Marcet\t0.22760656010656014\nRamón Salazar\t-0.09000000000000001\nSébastien Betbeder\t0.18502229090054348\nNick Everhart\t0.005326080630662021\nStéphane Vuillet\t0.11563166666666667\nSi-myung Lee\t0.18256199788293212\nJudd Apatow\t0.02027090032812016\nIouri Tcherenkov\t0.17313179226046876\nDelphine Kreuter\t0.13862586264717228\nGeorges Méliès\t0.21909536509286548\nTrey Stokes\t0.0763717320261438\nAnne Fletcher\t0.2903039450995452\nMilton Katselas\t0.027750000000000007\nRichard Pottier\t0.17166666666666663\nRoland Emmerich\t0.10618457113253277\nBetty Thomas\t0.16366471995746193\nDominic Polcino\t0.025128472222222222\nPeter Werner\t0.15003416347381862\nLaurent Bouhnik\t0.11053571428571429\nRenny Harlin\t0.06835082748792427\nBurr Steers\t0.13938265813638923\nMilton Katselas\t0.027750000000000007\nThomas Stiller\t0.13853068883277214\nJon Favreau\t0.15539776570482725\nRamón Salazar\t-0.09000000000000001\nSébastien Betbeder\t0.18502229090054348\nBetty Thomas\t0.16366471995746193\nAnthony Fankhauser\t0.04203770471563121\nMuriel Coulin\t0.015569675881352977\nRenny Harlin\t0.1650669594799816\nMilton Katselas\t0.027750000000000007\nThomas Stiller\t0.13853068883277214\nSteve McQueen (II)\t0.13524592896628537\nMuriel Coulin\t0.015569675881352977\nStéphane Vuillet\t0.11563166666666667\nJudd Apatow\t0.02027090032812016\nIouri Tcherenkov\t0.17313179226046876\nTrey Stokes\t0.0763717320261438\nMilton Katselas\t0.027750000000000007\nRichard Pottier\t0.17166666666666663\nGeorges Méliès\t0.21909536509286548\nPhilip Dunne\t0.11858552631578949\nTrey Stokes\t0.0763717320261438\nRoel Reiné\t0.14012532300932068\nRenny Harlin\t0.1650669594799816\nThi Bach Tuyet\t0.05455357142857143\nDusan Hanak\t0.06781250000000001\nSteve McQueen (II)\t0.13524592896628537\nDanny Boyle\t0.10111924020710218\nJacques Daniel-Norman\t0.06448412698412699\nNicolai Rohde\t0.05399999999999999\nMai Masri\t0.18469548200337674\nDominic Polcino\t0.025128472222222222\nVladimir Khotinenko\t0.11754871242230827\nPeter Hyams\t0.15159710087255832\nJon Favreau\t0.15539776570482725\nHenri Verneuil\t0.2540557471145707\nDusan Hanak\t0.06781250000000001\nMichael Lehmann\t0.07655922170063661\nAnthony Fankhauser\t0.04203770471563121\nMuriel Coulin\t0.015569675881352977\nDanny Boyle\t0.10111924020710218\nNick Everhart\t0.005326080630662021\nStéphane Vuillet\t0.11563166666666667\nMai Masri\t0.18469548200337674\nSi-myung Lee\t0.18256199788293212\nJudd Apatow\t0.02027090032812016\nVladimir Khotinenko\t0.11754871242230827\nIouri Tcherenkov\t0.17313179226046876\nTrey Stokes\t0.0763717320261438\nAnne Fletcher\t0.2903039450995452\nLucien Jean-Baptiste\t0.055680213568633445\nRichard Pottier\t0.17166666666666663\nMichael Lehmann\t0.07655922170063661\nDanny Boyle\t0.10111924020710218\nNick Everhart\t0.005326080630662021\nJacques Daniel-Norman\t0.06448412698412699\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.41.171.83:4043/jobs/job?id\u003d20",
+            "http://10.41.171.83:4043/jobs/job?id\u003d21"
+          ],
+          "interpreterSettingId": "2CNBV6FGC"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1499632784910_902985888",
+      "id": "20170709-223944_616194132",
+      "dateCreated": "2017-07-09 22:39:44.910",
+      "dateStarted": "2017-07-10 16:53:21.412",
+      "dateFinished": "2017-07-10 16:53:24.235",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\n",
+      "user": "anonymous",
+      "dateUpdated": "2017-07-10 17:02:14.740",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1499698934740_1578234345",
+      "id": "20170710-170214_1144182541",
+      "dateCreated": "2017-07-10 17:02:14.740",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect date, ownRating\nfrom records",
+      "user": "anonymous",
+      "dateUpdated": "2017-07-10 17:05:44.870",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "date": "string",
+                      "ownRating": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "date",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "ownRating",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "date\townRating\n2015\t0.18469548200337674\n1987\t0.15003416347381862\n2005\t0.13101605108975214\n2016\t0.0950881862858587\n2011\t0.055680213568633445\n1990\t0.1650669594799816\n\t0.17166666666666663\n2009\t0.13853068883277214\n2007\t0.05455357142857143\n2001\t0.07655922170063661\n2009\t0.04203770471563121\n2004\t0.11563166666666667\n2009\t0.025128472222222222\n2012\t0.02027090032812016\n2007\t0.11754871242230827\n2011\t0.21909536509286548\n1958\t0.11858552631578949\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n1992\t0.2540557471145707\n1969\t0.06781250000000001\n1945\t0.06448412698412699\n2015\t0.18469548200337674\n2002\t0.18256199788293212\n1987\t0.15003416347381862\n2011\t0.21909536509286548\n1958\t0.11858552631578949\n2010\t0.0763717320261438\n2008\t0.2903039450995452\n2011\t0.055680213568633445\n1973\t0.027750000000000007\n\t0.17166666666666663\n2009\t0.10618457113253277\n1992\t0.2540557471145707\n2013\t0.18502229090054348\n2013\t0.13524592896628537\n2008\t0.005326080630662021\n2004\t0.11563166666666667\n2009\t0.025128472222222222\n2007\t0.11754871242230827\n2012\t0.17313179226046876\n2012\t0.10989755043254393\n2008\t0.13862586264717228\n2009\t0.06835082748792427\n2011\t0.21909536509286548\n2016\t0.0950881862858587\n2011\t0.055680213568633445\n\t0.17166666666666663\n1992\t0.2540557471145707\n2007\t0.05455357142857143\n2013\t0.18502229090054348\n2008\t0.005326080630662021\n2004\t0.11563166666666667\n1984\t0.15159710087255832\n2008\t0.13862586264717228\n1958\t0.11858552631578949\n2013\t0.14012532300932068\n2011\t0.055680213568633445\n2009\t0.13938265813638923\n1990\t0.1650669594799816\n2009\t0.13853068883277214\n2002\t0.18256199788293212\n1999\t0.11053571428571429\n2012\t0.10989755043254393\n2008\t0.13862586264717228\n2009\t0.06835082748792427\n2010\t0.0763717320261438\n2013\t0.13524592896628537\n2008\t0.05399999999999999\n2004\t0.11563166666666667\n2012\t0.02027090032812016\n1999\t0.11053571428571429\n1984\t0.15159710087255832\n2005\t0.13101605108975214\n2013\t0.14012532300932068\n2009\t0.13938265813638923\n1990\t0.1650669594799816\n2009\t0.13853068883277214\n2014\t0.15539776570482725\n1969\t0.06781250000000001\n2009\t0.04203770471563121\n2002\t0.10111924020710218\n2002\t0.18256199788293212\n1987\t0.15003416347381862\n1999\t0.11053571428571429\n1958\t0.11858552631578949\n2010\t0.0763717320261438\n1973\t0.027750000000000007\n2014\t0.22760656010656014\n2009\t0.10618457113253277\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2009\t0.04203770471563121\n2013\t0.13524592896628537\n2011\t0.015569675881352977\n1945\t0.06448412698412699\n2008\t0.05399999999999999\n2002\t0.18256199788293212\n2012\t0.02027090032812016\n1999\t0.11053571428571429\n2002\t0.10111924020710218\n1987\t0.15003416347381862\n1984\t0.15159710087255832\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n2014\t0.22760656010656014\n2009\t0.13853068883277214\n2014\t0.15539776570482725\n2013\t0.13524592896628537\n2009\t0.025128472222222222\n2008\t0.13862586264717228\n2005\t0.13101605108975214\n2011\t0.055680213568633445\n2009\t0.04203770471563121\n2009\t0.025128472222222222\n1958\t0.11858552631578949\n2008\t0.2903039450995452\n2011\t0.055680213568633445\n2009\t0.13938265813638923\n1990\t0.1650669594799816\n\t0.17166666666666663\n2014\t0.15539776570482725\n2013\t0.18502229090054348\n2001\t0.07655922170063661\n2011\t0.015569675881352977\n1945\t0.06448412698412699\n2004\t0.11563166666666667\n2009\t0.025128472222222222\n1984\t0.15159710087255832\n2013\t0.14012532300932068\n2014\t0.22760656010656014\n1992\t0.2540557471145707\n2007\t0.05455357142857143\n1999\t0.16366471995746193\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2013\t0.13524592896628537\n2008\t0.05399999999999999\n2002\t0.18256199788293212\n2008\t0.005326080630662021\n2009\t0.025128472222222222\n2007\t0.11754871242230827\n2012\t0.17313179226046876\n2012\t0.10989755043254393\n2008\t0.13862586264717228\n2016\t0.0950881862858587\n2014\t0.22760656010656014\n2007\t0.05455357142857143\n1945\t0.06448412698412699\n2008\t0.05399999999999999\n2012\t0.02027090032812016\n1984\t0.15159710087255832\n2014\t0.15539776570482725\n2013\t-0.09000000000000001\n1999\t0.16366471995746193\n2015\t0.18469548200337674\n2012\t0.10989755043254393\n2009\t0.06835082748792427\n2011\t0.21909536509286548\n2010\t0.0763717320261438\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n1973\t0.027750000000000007\n\t0.17166666666666663\n2008\t0.05399999999999999\n2012\t0.17313179226046876\n1984\t0.15159710087255832\n2008\t0.2903039450995452\n2013\t0.14012532300932068\n2014\t0.22760656010656014\n2009\t0.10618457113253277\n2014\t0.15539776570482725\n2013\t-0.09000000000000001\n2013\t0.18502229090054348\n1999\t0.16366471995746193\n2011\t0.015569675881352977\n2002\t0.10111924020710218\n2009\t0.06835082748792427\n2013\t-0.09000000000000001\n1999\t0.16366471995746193\n2001\t0.07655922170063661\n2011\t0.015569675881352977\n2015\t0.18469548200337674\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n2013\t0.14012532300932068\n2009\t0.13938265813638923\n1990\t0.1650669594799816\n2009\t0.13853068883277214\n2002\t0.10111924020710218\n2009\t0.025128472222222222\n2007\t0.11754871242230827\n1987\t0.15003416347381862\n2012\t0.17313179226046876\n2016\t0.0950881862858587\n2009\t0.10618457113253277\n2013\t-0.09000000000000001\n2009\t0.04203770471563121\n2011\t0.015569675881352977\n1945\t0.06448412698412699\n2004\t0.11563166666666667\n2015\t0.18469548200337674\n2012\t0.17313179226046876\n2012\t0.10989755043254393\n2010\t0.0763717320261438\n2016\t0.0950881862858587\n2013\t0.14012532300932068\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n\t0.17166666666666663\n2009\t0.10618457113253277\n1992\t0.2540557471145707\n2013\t-0.09000000000000001\n1999\t0.16366471995746193\n2008\t0.005326080630662021\n2004\t0.11563166666666667\n2012\t0.02027090032812016\n2007\t0.11754871242230827\n1987\t0.15003416347381862\n2012\t0.10989755043254393\n2011\t0.21909536509286548\n1958\t0.11858552631578949\n2010\t0.0763717320261438\n2014\t0.22760656010656014\n2009\t0.10618457113253277\n1992\t0.2540557471145707\n1999\t0.16366471995746193\n1969\t0.06781250000000001\n2002\t0.10111924020710218\n2008\t0.05399999999999999\n2015\t0.18469548200337674\n2002\t0.18256199788293212\n1999\t0.11053571428571429\n2012\t0.10989755043254393\n1984\t0.15159710087255832\n2011\t0.21909536509286548\n2010\t0.0763717320261438\n1992\t0.2540557471145707\n2008\t0.05399999999999999\n2015\t0.18469548200337674\n2007\t0.11754871242230827\n2011\t0.21909536509286548\n2014\t0.15539776570482725\n2013\t0.18502229090054348\n2008\t0.005326080630662021\n2009\t0.06835082748792427\n2011\t0.21909536509286548\n1958\t0.11858552631578949\n2011\t0.055680213568633445\n1990\t0.1650669594799816\n2013\t0.18502229090054348\n2011\t0.015569675881352977\n1999\t0.11053571428571429\n2009\t0.06835082748792427\n2008\t0.2903039450995452\n2016\t0.0950881862858587\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n2009\t0.13853068883277214\n2014\t0.15539776570482725\n2013\t0.13524592896628537\n2011\t0.015569675881352977\n2004\t0.11563166666666667\n2012\t0.02027090032812016\n1987\t0.15003416347381862\n2012\t0.17313179226046876\n2005\t0.13101605108975214\n2016\t0.0950881862858587\n2009\t0.10618457113253277\n2007\t0.05455357142857143\n1999\t0.16366471995746193\n2014\t0.15539776570482725\n1992\t0.2540557471145707\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n1973\t0.027750000000000007\n2014\t0.22760656010656014\n2013\t0.13524592896628537\n2011\t0.015569675881352977\n1945\t0.06448412698412699\n2002\t0.18256199788293212\n2009\t0.025128472222222222\n2012\t0.02027090032812016\n2007\t0.11754871242230827\n2012\t0.10989755043254393\n2008\t0.13862586264717228\n2009\t0.06835082748792427\n1958\t0.11858552631578949\n1973\t0.027750000000000007\n2014\t0.22760656010656014\n2009\t0.10618457113253277\n2007\t0.05455357142857143\n2013\t0.18502229090054348\n1999\t0.16366471995746193\n1969\t0.06781250000000001\n2002\t0.10111924020710218\n2004\t0.11563166666666667\n2007\t0.11754871242230827\n2008\t0.13862586264717228\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n1990\t0.1650669594799816\n2014\t0.15539776570482725\n2009\t0.04203770471563121\n2008\t0.005326080630662021\n2004\t0.11563166666666667\n2002\t0.18256199788293212\n2009\t0.025128472222222222\n2007\t0.11754871242230827\n2012\t0.10989755043254393\n1958\t0.11858552631578949\n2013\t0.14012532300932068\n2013\t0.13524592896628537\n2008\t0.005326080630662021\n2012\t0.02027090032812016\n1999\t0.11053571428571429\n2009\t0.06835082748792427\n2010\t0.0763717320261438\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n2016\t0.0950881862858587\n2011\t0.055680213568633445\n1990\t0.1650669594799816\n\t0.17166666666666663\n2014\t0.22760656010656014\n2009\t0.13853068883277214\n2007\t0.05455357142857143\n2013\t-0.09000000000000001\n1999\t0.16366471995746193\n2001\t0.07655922170063661\n2013\t0.13524592896628537\n2002\t0.10111924020710218\n2004\t0.11563166666666667\n2009\t0.025128472222222222\n2007\t0.11754871242230827\n2012\t0.17313179226046876\n2012\t0.10989755043254393\n2010\t0.0763717320261438\n2016\t0.0950881862858587\n2009\t0.13938265813638923\n1990\t0.1650669594799816\n\t0.17166666666666663\n2009\t0.10618457113253277\n2007\t0.05455357142857143\n2013\t-0.09000000000000001\n2009\t0.04203770471563121\n2008\t0.005326080630662021\n2004\t0.11563166666666667\n2005\t0.13101605108975214\n2013\t0.14012532300932068\n1990\t0.1650669594799816\n1992\t0.2540557471145707\n2013\t-0.09000000000000001\n2001\t0.07655922170063661\n2009\t0.13853068883277214\n2007\t0.05455357142857143\n2013\t0.18502229090054348\n2001\t0.07655922170063661\n2009\t0.04203770471563121\n2008\t0.05399999999999999\n2004\t0.11563166666666667\n2012\t0.02027090032812016\n2007\t0.11754871242230827\n1999\t0.11053571428571429\n2011\t0.21909536509286548\n2011\t0.055680213568633445\n\t0.17166666666666663\n2013\t0.18502229090054348\n1999\t0.16366471995746193\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2011\t0.015569675881352977\n2002\t0.10111924020710218\n2004\t0.11563166666666667\n2007\t0.11754871242230827\n1987\t0.15003416347381862\n2012\t0.10989755043254393\n2009\t0.06835082748792427\n2010\t0.0763717320261438\n2011\t0.055680213568633445\n2014\t0.15539776570482725\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2002\t0.10111924020710218\n1945\t0.06448412698412699\n2015\t0.18469548200337674\n2002\t0.18256199788293212\n1987\t0.15003416347381862\n2012\t0.10989755043254393\n1984\t0.15159710087255832\n2008\t0.13862586264717228\n2011\t0.21909536509286548\n1958\t0.11858552631578949\n2013\t0.14012532300932068\n2011\t0.015569675881352977\n1945\t0.06448412698412699\n2015\t0.18469548200337674\n2009\t0.025128472222222222\n2012\t0.02027090032812016\n1999\t0.11053571428571429\n2012\t0.17313179226046876\n2012\t0.10989755043254393\n1984\t0.15159710087255832\n2009\t0.06835082748792427\n1958\t0.11858552631578949\n2011\t0.055680213568633445\n2009\t0.13938265813638923\n\t0.17166666666666663\n2009\t0.13853068883277214\n2007\t0.05455357142857143\n2013\t0.18502229090054348\n1969\t0.06781250000000001\n2013\t0.13524592896628537\n2011\t0.015569675881352977\n2008\t0.05399999999999999\n2012\t0.02027090032812016\n1984\t0.15159710087255832\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n\t0.17166666666666663\n1999\t0.16366471995746193\n2009\t0.025128472222222222\n1987\t0.15003416347381862\n2012\t0.17313179226046876\n2008\t0.13862586264717228\n2009\t0.06835082748792427\n2013\t0.14012532300932068\n1990\t0.1650669594799816\n2009\t0.13853068883277214\n2009\t0.10618457113253277\n2007\t0.05455357142857143\n2013\t-0.09000000000000001\n2009\t0.04203770471563121\n2015\t0.18469548200337674\n2009\t0.025128472222222222\n2012\t0.17313179226046876\n2008\t0.13862586264717228\n2011\t0.21909536509286548\n2008\t0.2903039450995452\n2016\t0.0950881862858587\n2013\t0.14012532300932068\n2009\t0.10618457113253277\n2013\t-0.09000000000000001\n2013\t0.18502229090054348\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2013\t0.13524592896628537\n2011\t0.015569675881352977\n2008\t0.005326080630662021\n1945\t0.06448412698412699\n2008\t0.05399999999999999\n2004\t0.11563166666666667\n2012\t0.02027090032812016\n2012\t0.10989755043254393\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n\t0.17166666666666663\n1992\t0.2540557471145707\n1999\t0.16366471995746193\n2011\t0.015569675881352977\n1987\t0.15003416347381862\n2005\t0.13101605108975214\n2013\t0.14012532300932068\n2009\t0.13853068883277214\n2013\t0.13524592896628537\n2012\t0.10989755043254393\n2011\t0.21909536509286548\n1958\t0.11858552631578949\n2016\t0.0950881862858587\n2009\t0.10618457113253277\n2007\t0.05455357142857143\n1969\t0.06781250000000001\n\t0.17166666666666663\n2014\t0.22760656010656014\n2007\t0.05455357142857143\n2013\t0.18502229090054348\n1999\t0.16366471995746193\n2009\t0.025128472222222222\n2016\t0.0950881862858587\n2011\t0.055680213568633445\n2014\t0.22760656010656014\n2009\t0.13853068883277214\n1999\t0.16366471995746193\n2009\t0.04203770471563121\n2002\t0.10111924020710218\n2015\t0.18469548200337674\n2009\t0.025128472222222222\n1987\t0.15003416347381862\n1999\t0.11053571428571429\n1984\t0.15159710087255832\n2009\t0.06835082748792427\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n2016\t0.0950881862858587\n2009\t0.13853068883277214\n2009\t0.10618457113253277\n2014\t0.15539776570482725\n2001\t0.07655922170063661\n2009\t0.04203770471563121\n1999\t0.11053571428571429\n2012\t0.10989755043254393\n2009\t0.06835082748792427\n1958\t0.11858552631578949\n2016\t0.0950881862858587\n2011\t0.055680213568633445\n2009\t0.13938265813638923\n1990\t0.1650669594799816\n2014\t0.22760656010656014\n2007\t0.05455357142857143\n2013\t-0.09000000000000001\n2013\t0.18502229090054348\n1945\t0.06448412698412699\n2008\t0.05399999999999999\n1984\t0.15159710087255832\n2008\t0.13862586264717228\n2005\t0.13101605108975214\n2013\t0.14012532300932068\n1990\t0.1650669594799816\n2014\t0.22760656010656014\n1992\t0.2540557471145707\n2013\t0.13524592896628537\n2009\t0.025128472222222222\n2012\t0.02027090032812016\n2007\t0.11754871242230827\n1999\t0.11053571428571429\n2008\t0.13862586264717228\n2007\t0.05455357142857143\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2009\t0.04203770471563121\n2002\t0.10111924020710218\n1945\t0.06448412698412699\n2008\t0.05399999999999999\n2015\t0.18469548200337674\n2002\t0.18256199788293212\n2012\t0.17313179226046876\n1984\t0.15159710087255832\n2013\t0.14012532300932068\n1990\t0.1650669594799816\n\t0.17166666666666663\n2007\t0.05455357142857143\n2013\t-0.09000000000000001\n2013\t0.18502229090054348\n2001\t0.07655922170063661\n2008\t0.005326080630662021\n1945\t0.06448412698412699\n2007\t0.11754871242230827\n2008\t0.13862586264717228\n2009\t0.06835082748792427\n2013\t0.14012532300932068\n1973\t0.027750000000000007\n2014\t0.22760656010656014\n2009\t0.13853068883277214\n2013\t-0.09000000000000001\n1969\t0.06781250000000001\n2009\t0.04203770471563121\n2009\t0.10618457113253277\n2009\t0.04203770471563121\n2011\t0.015569675881352977\n2008\t0.005326080630662021\n2008\t0.05399999999999999\n2012\t0.02027090032812016\n1987\t0.15003416347381862\n1999\t0.11053571428571429\n1984\t0.15159710087255832\n2008\t0.13862586264717228\n2011\t0.21909536509286548\n2013\t0.14012532300932068\n2011\t0.055680213568633445\n2009\t0.13853068883277214\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2015\t0.18469548200337674\n1984\t0.15159710087255832\n2008\t0.2903039450995452\n\t0.17166666666666663\n2009\t0.04203770471563121\n2008\t0.005326080630662021\n2002\t0.18256199788293212\n2011\t0.21909536509286548\n2010\t0.0763717320261438\n2013\t0.14012532300932068\n1973\t0.027750000000000007\n2009\t0.10618457113253277\n2001\t0.07655922170063661\n1945\t0.06448412698412699\n1987\t0.15003416347381862\n1999\t0.11053571428571429\n2012\t0.17313179226046876\n2011\t0.21909536509286548\n2010\t0.0763717320261438\n2016\t0.0950881862858587\n2002\t0.10111924020710218\n2002\t0.18256199788293212\n1987\t0.15003416347381862\n2012\t0.17313179226046876\n2012\t0.10989755043254393\n2008\t0.13862586264717228\n1958\t0.11858552631578949\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n2013\t0.18502229090054348\n1969\t0.06781250000000001\n1945\t0.06448412698412699\n2015\t0.18469548200337674\n2002\t0.18256199788293212\n2009\t0.06835082748792427\n1958\t0.11858552631578949\n2014\t0.15539776570482725\n1992\t0.2540557471145707\n2013\t0.18502229090054348\n1999\t0.16366471995746193\n2002\t0.10111924020710218\n2008\t0.05399999999999999\n1987\t0.15003416347381862\n1999\t0.11053571428571429\n2012\t0.17313179226046876\n2011\t0.21909536509286548\n2010\t0.0763717320261438\n2016\t0.0950881862858587\n2011\t0.055680213568633445\n2009\t0.13938265813638923\n2009\t0.13853068883277214\n2014\t0.15539776570482725\n1990\t0.1650669594799816\n1992\t0.2540557471145707\n1969\t0.06781250000000001\n2013\t0.13524592896628537\n2011\t0.015569675881352977\n2002\t0.10111924020710218\n2008\t0.005326080630662021\n2002\t0.18256199788293212\n1984\t0.15159710087255832\n2010\t0.0763717320261438\n2008\t0.2903039450995452\n2016\t0.0950881862858587\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n2014\t0.22760656010656014\n2013\t0.13524592896628537\n2008\t0.005326080630662021\n1945\t0.06448412698412699\n1999\t0.11053571428571429\n1984\t0.15159710087255832\n2009\t0.13938265813638923\n2009\t0.10618457113253277\n1992\t0.2540557471145707\n2013\t-0.09000000000000001\n2009\t0.04203770471563121\n2008\t0.005326080630662021\n2008\t0.05399999999999999\n2007\t0.11754871242230827\n1999\t0.11053571428571429\n2009\t0.06835082748792427\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n2013\t0.13524592896628537\n2008\t0.05399999999999999\n1987\t0.15003416347381862\n2016\t0.0950881862858587\n2014\t0.22760656010656014\n1992\t0.2540557471145707\n2013\t-0.09000000000000001\n1999\t0.16366471995746193\n2002\t0.10111924020710218\n2015\t0.18469548200337674\n2008\t0.13862586264717228\n2009\t0.06835082748792427\n2005\t0.13101605108975214\n2008\t0.2903039450995452\n2011\t0.055680213568633445\n2014\t0.22760656010656014\n2009\t0.10618457113253277\n2014\t0.15539776570482725\n2013\t-0.09000000000000001\n1945\t0.06448412698412699\n2015\t0.18469548200337674\n2012\t0.10989755043254393\n1958\t0.11858552631578949\n2005\t0.13101605108975214\n2014\t0.15539776570482725\n1992\t0.2540557471145707\n2008\t0.05399999999999999\n2002\t0.18256199788293212\n2012\t0.02027090032812016\n1958\t0.11858552631578949\n2005\t0.13101605108975214\n2009\t0.13938265813638923\n1990\t0.1650669594799816\n2014\t0.15539776570482725\n1992\t0.2540557471145707\n2007\t0.05455357142857143\n2002\t0.18256199788293212\n2007\t0.11754871242230827\n2012\t0.17313179226046876\n2008\t0.13862586264717228\n2011\t0.055680213568633445\n2014\t0.22760656010656014\n2013\t-0.09000000000000001\n2013\t0.18502229090054348\n2008\t0.005326080630662021\n2004\t0.11563166666666667\n2002\t0.18256199788293212\n2012\t0.02027090032812016\n2012\t0.17313179226046876\n2008\t0.13862586264717228\n2011\t0.21909536509286548\n2010\t0.0763717320261438\n2008\t0.2903039450995452\n1973\t0.027750000000000007\n\t0.17166666666666663\n2009\t0.10618457113253277\n1999\t0.16366471995746193\n2009\t0.025128472222222222\n1987\t0.15003416347381862\n1999\t0.11053571428571429\n2009\t0.06835082748792427\n2009\t0.13938265813638923\n1973\t0.027750000000000007\n2009\t0.13853068883277214\n2014\t0.15539776570482725\n2013\t-0.09000000000000001\n2013\t0.18502229090054348\n1999\t0.16366471995746193\n2009\t0.04203770471563121\n2011\t0.015569675881352977\n1990\t0.1650669594799816\n1973\t0.027750000000000007\n2009\t0.13853068883277214\n2013\t0.13524592896628537\n2011\t0.015569675881352977\n2004\t0.11563166666666667\n2012\t0.02027090032812016\n2012\t0.17313179226046876\n2010\t0.0763717320261438\n1973\t0.027750000000000007\n\t0.17166666666666663\n2011\t0.21909536509286548\n1958\t0.11858552631578949\n2010\t0.0763717320261438\n2013\t0.14012532300932068\n1990\t0.1650669594799816\n2007\t0.05455357142857143\n1969\t0.06781250000000001\n2013\t0.13524592896628537\n2002\t0.10111924020710218\n1945\t0.06448412698412699\n2008\t0.05399999999999999\n2015\t0.18469548200337674\n2009\t0.025128472222222222\n2007\t0.11754871242230827\n1984\t0.15159710087255832\n2014\t0.15539776570482725\n1992\t0.2540557471145707\n1969\t0.06781250000000001\n2001\t0.07655922170063661\n2009\t0.04203770471563121\n2011\t0.015569675881352977\n2002\t0.10111924020710218\n2008\t0.005326080630662021\n2004\t0.11563166666666667\n2015\t0.18469548200337674\n2002\t0.18256199788293212\n2012\t0.02027090032812016\n2007\t0.11754871242230827\n2012\t0.17313179226046876\n2010\t0.0763717320261438\n2008\t0.2903039450995452\n2011\t0.055680213568633445\n\t0.17166666666666663\n2001\t0.07655922170063661\n2002\t0.10111924020710218\n2008\t0.005326080630662021\n1945\t0.06448412698412699\n"
+          }
+        ]
+      },
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            "http://10.41.171.83:4043/jobs/job?id\u003d36",
+            "http://10.41.171.83:4043/jobs/job?id\u003d37"
+          ],
+          "interpreterSettingId": "2CNBV6FGC"
+        }
+      },
+      "apps": [],
+      "jobName": "paragraph_1499698662667_1493606556",
+      "id": "20170710-165742_1049002267",
+      "dateCreated": "2017-07-10 16:57:42.667",
+      "dateStarted": "2017-07-10 17:02:06.880",
+      "dateFinished": "2017-07-10 17:02:07.538",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\n",
+      "user": "anonymous",
+      "dateUpdated": "2017-07-10 17:02:06.870",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1499698926870_214284170",
+      "id": "20170710-170206_127199394",
+      "dateCreated": "2017-07-10 17:02:06.870",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "zawarudo",
+  "id": "2CNAD1F4Q",
+  "angularObjects": {
+    "2CMXS57NW:shared_process": [],
+    "2CME4789B:shared_process": [],
+    "2CKVFVKNU:shared_process": [],
+    "2CP3H3MBZ:shared_process": [],
+    "2CNPDTMD1:shared_process": [],
+    "2CNBV6FGC:shared_process": [],
+    "2CNGNZZRZ:shared_process": [],
+    "2CP6FEQYU:shared_process": [],
+    "2CKTQ6NG9:shared_process": [],
+    "2CP563VKU:shared_process": [],
+    "2CMFA7B48:shared_process": [],
+    "2CMM53AW1:shared_process": [],
+    "2CN49ZTGB:shared_process": [],
+    "2CQ2EM7F6:shared_process": [],
+    "2CN6D3DPG:shared_process": [],
+    "2CKZ3SNEJ:shared_process": [],
+    "2CP6WTTK3:shared_process": [],
+    "2CN58ASKH:shared_process": [],
+    "2CNPQTEVC:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
