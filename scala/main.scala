@@ -1,4 +1,4 @@
-package test.lol
+package scala.movie
 
 import test.lol.AlloUtils._
 import test.lol.RatingUtils._
@@ -62,7 +62,7 @@ object Main {
     consumer.seekToBeginning(top)
   }
 
-  def Toshow(source: String) = {
+  def toShow(source: String) = {
     println("Show")
     val conf = new SparkConf().setAppName("Movie reviews").setMaster("local[*]")
     val sc = SparkContext.getOrCreate(conf)
@@ -111,26 +111,28 @@ object Main {
      * arg1: [ allo | tmdb ]
      */
   def main(args: Array[String]): Unit = {
-    println("babidoo")
-
-    if (args.length() == 1) {
+    if (args.length == 1) {
       start()
 
       if (args(0) == "allo") {
         println("AlloCiné")
-        ToShow("allo")
+        toShow("allo")
       }
       else if (args(0) == "tmdb") {
         println("TMDB")
         //toBeginning()
-        ToShow("tmdb")
+        toShow("tmdb")
       }
     }
     else
       println()
-      println("USAGE")
-      println("sbt \"run arg1 arg2\"")
-      println("arg1: [ allo | tmdb ]")
+      println(" /================================\\")
+      println("||                                ||")
+      println("|| USAGE                          ||")
+      println("||     sbt \"run arg1              ||")
+      println("||     arg1: [ allo | tmdb ]      ||")
+      println("||                                ||")
+      println(" \\================================/")
       println()
   }
 

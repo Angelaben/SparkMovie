@@ -1,4 +1,4 @@
-package test.lol
+package scala.movie
 
 import test.lol.GenreUtils._
 import play.api.libs.json.{JsError, JsSuccess, Json}

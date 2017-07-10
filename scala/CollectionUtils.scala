@@ -1,3 +1,5 @@
+package scala.movie
+
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
 object CollectionUtils {

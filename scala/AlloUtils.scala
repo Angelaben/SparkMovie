@@ -1,4 +1,4 @@
-package test.lol
+package scala.movie
 import play.api.libs.json._
 
 object AlloUtils  {
