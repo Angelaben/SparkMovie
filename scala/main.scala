@@ -77,7 +77,7 @@ object Main {
      println("Listening - scala ")
 
      val records = consumer.poll(1000)
-     var text = ""
+     //var text = ""
      //val it = records.records("my-topic").iterator()
      val it = records.records("my-ratings").iterator()
      while (it.hasNext) {
