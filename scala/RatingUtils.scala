@@ -26,9 +26,7 @@ object RatingUtils {
     budget:              Option[Int],
     vote_average:        Option[Float],
     runtime:             Option[Int]
-//    production_companies: [{"name": "Miramax Films", "id": 14},
-//                           {"name": "A Band Apart", "id": 59}],
-  )
+  ) extends java.io.Serializable
 
   implicit val ratingFormat = Json.format[Rating]
 
