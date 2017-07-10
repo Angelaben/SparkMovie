@@ -31,11 +31,11 @@ object Main {
 
   def createConsumerConfig(): Properties = {
     val props = new Properties()
-    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "163.5.220.83:9092")
+    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "172.20.10.4:9092")
     props.put(ConsumerConfig.GROUP_ID_CONFIG, "test-consumer-group")
     props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true")
     props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000")
-    props.put("zookeeper.connect", "163.5.220.83:2181")
+    props.put("zookeeper.connect", "172.20.10.4:2181")
     props.put("session.timeout.ms", "30000")
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
               "org.apache.kafka.common.serialization.StringDeserializer")

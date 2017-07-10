@@ -23,9 +23,9 @@ class Consumer(multiprocessing.Process):
     def run(self):
 
         print("Consumer begin ",self.ID) # IP CLara
-        #consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
+        #consumer = KafkaConsumer(bootstrap_servers='172.20.10.4:9092',
 
-        consumer = KafkaConsumer(bootstrap_servers = '37.163.95.205',
+        consumer = KafkaConsumer(bootstrap_servers = '172.20.10.4',
                                   group_id='StarPlatinium',
                                  auto_offset_reset='earliest', consumer_timeout_ms = 100 )
         consumer.subscribe(['my-topic'])
@@ -55,8 +55,8 @@ class Analyzer(multiprocessing.Process):
         Myanalyzer = SentimentalAnalysis
 
         print("Analyzer begin")
-#        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-        consumer = KafkaConsumer(bootstrap_servers='37.163.95.205',
+#        consumer = KafkaConsumer(bootstrap_servers='172.20.10.4:9092',
+        consumer = KafkaConsumer(bootstrap_servers='172.20.10.4',
                                      auto_offset_reset='earliest', consumer_timeout_ms=10000)
         consumer.subscribe(['my-topic'])
         print("Subscription analyzer: OK")
@@ -90,7 +90,7 @@ class Analyzer(multiprocessing.Process):
                 else :
                     jsoned['ownRating'] = 0
                 moviesList.append(jsoned)
-        producer = KafkaProducer(bootstrap_servers='localhost:9092')
+        producer = KafkaProducer(bootstrap_servers='172.20.10.4:9092')
 
 
         for data in moviesList:
