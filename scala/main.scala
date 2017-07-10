@@ -1,5 +1,5 @@
 package test.lol
-
+import test.lol.AlloUtils
 import test.lol.MovieUtils._
 import test.lol.RatingUtils._
 //import test.lol.NewFile
@@ -17,7 +17,9 @@ import java.util.Properties
 import kafka.utils.Logging
 import scala.collection.JavaConversions._
 import java.util
-
+import org.apache.hadoop.io._
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
+import org.apache.hadoop.fs.FileSystem
 import org.apache.kafka.clients.consumer.{ConsumerConfig, KafkaConsumer, ConsumerRecord}
 import org.apache.kafka.clients.consumer
 import org.apache.kafka.common.TopicPartition
@@ -53,13 +55,13 @@ object Main {
   def start(): Unit = {
     println("Start")
     val topics : util.List[String] = new util.ArrayList[String]()
-    topics.add("my-rating")
+    topics.add("my-ratings")
     consumer.subscribe(topics)
   }
 
   def toBeginning() = {
     val top = new util.ArrayList[TopicPartition]()
-    top.add(new TopicPartition("my-rating", 2))
+    top.add(new TopicPartition("my-ratings", 2))
     consumer.seekToBeginning(top)
   }
 
@@ -67,16 +69,7 @@ object Main {
     println("Show")
     val conf = new SparkConf().setAppName("testdelamortquitue").setMaster("local[*]")
     val sc = SparkContext.getOrCreate(conf)
-    /*
-    val test = sc.textFile("reduced-tweets.json")
-    println("====================================================================")
-    println("====================================================================")
-    println(test.getClass())
-    // class org.apache.spark.rdd.MapPartitionsRDD
 
-    println("====================================================================")
-    println("====================================================================")
-    */
    new File("testFile.txt").delete()
    while (true) {
      var hasWritten = false
@@ -86,41 +79,30 @@ object Main {
      val records = consumer.poll(1000)
      var text = ""
      //val it = records.records("my-topic").iterator()
-     val it = records.records("my-rating").iterator()
+     val it = records.records("my-ratings").iterator()
      while (it.hasNext) {
        hasWritten = true
        val record = it.next()
        fileWriter.write(record.value())
        fileWriter.write("\n")
-       //text.concat(record.value())
-       //text.concat("\n")
-       println("test")
+
+
      }
 
-    // if (text != "")
-    //   fileWriter.write(text)
+
      fileWriter.flush()
      fileWriter.close()
      Thread.sleep(1000)
 
      if (new File("testFile.txt").length() != 0 && hasWritten == true) {
        println ("parsing:")
-       var rdd = sc.textFile("testFile.txt")
-         .flatMap(StringToRating)
-         //.flatMap(StringToMovie)
-         //.flatMap(StringToRating)
-
-
-         if (rdd.take(1) != null) {
-           println("====================================================================")
-           println("====================================================================")
-           println(rdd.take(1))
-           println("====================================================================")
-           println("====================================================================")
-           // rdd.saveAsTextFile("anotherTest.txt")
-         }
+       val rdd = sc.textFile("testFile.txt")
+         .flatMap(AlloUtils.StringToAllo)
+       //rdd.saveAsTextFile("hdfs")
+       rdd.repartition(1).saveAsTextFile("hdfs" + rdd.hashCode())
          println("GOOD")
      }
+
 
    }
   }

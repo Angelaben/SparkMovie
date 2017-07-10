@@ -24,7 +24,7 @@ object MovieUtils {
     vote_average:       Option[Float],
     vote_count:         Option[Int],
     review:             Option[List[Option[String]]]
-  )
+  ) extends  java.io.Serializable
 
   implicit val movieFormat = Json.format[Movie]
 
