@@ -218,7 +218,7 @@ class Producer(threading.Thread):
     daemon = True
 
     def run(self):
-        print("Producer begin")
+        print("Producer begin") # IP CLara
         producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
         for data in moviesList :
@@ -237,9 +237,11 @@ class Consumer(multiprocessing.Process):
         self.ID = id
     def run(self):
 
-        print("Consumer begin ",self.ID)
-        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-                                 group_id='StarPlatinium',
+        print("Consumer begin ",self.ID) # IP CLara
+        #consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
+
+        consumer = KafkaConsumer(bootstrap_servers = '37.163.95.205',
+                                  group_id='StarPlatinium',
                                  auto_offset_reset='earliest', consumer_timeout_ms = 100 )
         consumer.subscribe(['my-topic'])
         self.retrievedData = []
@@ -267,7 +269,8 @@ class Analyzer(multiprocessing.Process):
         Myanalyzer = SentimentalAnalysis
 
         print("Analyzer begin")
-        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
+#        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
+        consumer = KafkaConsumer(bootstrap_servers='localhost:9092','37.163.95.205',
                                      auto_offset_reset='earliest', consumer_timeout_ms=10000)
         consumer.subscribe(['my-topic'])
         print("Subscription analyzer: OK")
