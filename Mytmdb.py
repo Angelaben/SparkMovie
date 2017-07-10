@@ -16,8 +16,8 @@ from nltk.sentiment import SentimentAnalyzer
 from kafka import KafkaConsumer, KafkaProducer
 
 debug = True
-importer = False
-allocine = True
+importer = True
+allocine = False
 ##################### PARTIE PARSING DE DONNEE ET TRAITEMENT  : TMDB    #############################
 def retrieveData(n, path):
     fichier = open(path, "w")
@@ -238,7 +238,6 @@ class Consumer(multiprocessing.Process):
         print("Consumer begin ",self.ID) # IP CLara
 
         print("Consumer begin ",self.ID)
-        #consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
         consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
                                  group_id='StarPlatinium',
                                  auto_offset_reset='earliest', consumer_timeout_ms = 100 )
@@ -268,9 +267,8 @@ class Analyzer(multiprocessing.Process):
         Myanalyzer = SentimentalAnalysis
 
         print("Analyzer begin")
-#        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
         consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-                                     auto_offset_reset='earliest', consumer_timeout_ms=10000)
+                                 auto_offset_reset='earliest', consumer_timeout_ms=10000)
         consumer.subscribe(['my-topic'])
         print("Subscription analyzer: OK")
         moviesList = []
