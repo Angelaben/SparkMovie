@@ -23,10 +23,8 @@ class Consumer(multiprocessing.Process):
     def run(self):
 
         print("Consumer begin ",self.ID) # IP CLara
-        #consumer = KafkaConsumer(bootstrap_servers='172.20.10.4:9092',
-
-        consumer = KafkaConsumer(bootstrap_servers = '172.20.10.4',
-                                  group_id='StarPlatinium',
+        consumer = KafkaConsumer(bootstrap_servers='172.20.10.4:9092',
+                                 group_id='StarPlatinium',
                                  auto_offset_reset='earliest', consumer_timeout_ms = 100 )
         consumer.subscribe(['my-topic'])
         self.retrievedData = []
@@ -102,6 +100,8 @@ class Analyzer(multiprocessing.Process):
         producer.flush()
         producer.close()
         print("DataAnalyse produced")
+
+
 tasks = [
     Consumer(1),
     Consumer(2),
