@@ -104,7 +104,7 @@ def getDataFromMoviePage(url):
     disable_buttons = [b.div.get_text(' ', strip=True) for b in html.body.find_all('span', {'class': 'item js-item-mq inactive'})]
     reviews_press_enable = 'Critiques presse' not in disable_buttons
     reviews_people_enable = 'Critiques spectateurs' not in disable_buttons
-  #  press_reviews = None if not reviews_press_enable else getPressCommentsFromPage(critique_press_url(movie_id))
+    press_reviews = None if not reviews_press_enable else getPressCommentsFromPage(critique_press_url(movie_id))
     spectators_reviews = None if not reviews_people_enable else getSpectateursCommentsFromPage(critique_spectateurs_url(movie_id))
 
     json_dic = {'id': movie_id,

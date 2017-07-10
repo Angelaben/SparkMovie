@@ -58,7 +58,7 @@ PAGE_LIMIT = 2 # Nombre de review max
 lock = RLock()
 
 def getParsedHTML(url, decode = 'latin-1'):
-    http_pool = urllib3.connection_from_url(url)
+    http_pool = urllib3.connection_from_url(url, decode='utf-8')
     r = http_pool.urlopen('GET', url)
     parsedHTML = BeautifulSoup(r.data.decode(decode), "html5lib")
     return parsedHTML
@@ -206,7 +206,6 @@ moviesList = []
 
 if allocine :
     for line in open('movies.json', 'r'):
-        print("ALLOCINE CALLED ")
         moviesList.append(json.loads(line))
 else : # TMDB
     for line in open('parsed.txt', 'r'):
@@ -238,9 +237,10 @@ class Consumer(multiprocessing.Process):
     def run(self):
 
         print("Consumer begin ",self.ID) # IP CLara
-        #consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
 
-        consumer = KafkaConsumer(bootstrap_servers = '37.163.95.205',
+
+      #  consumer = KafkaConsumer(bootstrap_servers = '37.163.95.205',
+        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
                                   group_id='StarPlatinium',
                                  auto_offset_reset='earliest', consumer_timeout_ms = 100 )
         consumer.subscribe(['my-topic'])
@@ -269,8 +269,9 @@ class Analyzer(multiprocessing.Process):
         Myanalyzer = SentimentalAnalysis
 
         print("Analyzer begin")
-#        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-        consumer = KafkaConsumer(bootstrap_servers='localhost:9092','37.163.95.205',
+#
+        #consumer = KafkaConsumer(bootstrap_servers='localhost:9092','37.163.95.205',
+        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
                                      auto_offset_reset='earliest', consumer_timeout_ms=10000)
         consumer.subscribe(['my-topic'])
         print("Subscription analyzer: OK")

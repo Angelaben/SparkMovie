@@ -1,28 +1,14 @@
-
-#!/usr/bin/env python
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk.classify import NaiveBayesClassifier
-from nltk.corpus import subjectivity
-from nltk.sentiment import SentimentAnalyzer
-from nltk.sentiment.util import *
-import tmdbsimple as tmdb
-tmdb.API_KEY = '913158e2a391c2720b155fdbe7cddce5'
-import json
-import threading, logging, time
-import multiprocessing
-import SentimentalAnalysis
-from nltk.classify import NaiveBayesClassifier
-from nltk.corpus import subjectivity
-from nltk.sentiment import SentimentAnalyzer
-from kafka import KafkaConsumer, KafkaProducer
-
-##################### PARTIE PARSING DE DONNEE ET TRAITEMENT  : ALLOCINE  #############################
 import urllib3
 import json
 from threading import Thread, RLock
 from bs4 import BeautifulSoup
+import json
+import threading, logging, time
+import multiprocessing
 
-PAGE_LIMIT = 2 # Nombre de review max
+from kafka import KafkaConsumer, KafkaProducer
+
+PAGE_LIMIT = 2
 lock = RLock()
 
 def getParsedHTML(url, decode = 'latin-1'):
@@ -65,6 +51,7 @@ def getMoviesUrls():
     defaultURL = "http://www.allocine.fr/films/alphabetique/"
     defaultHtml = getParsedHTML(defaultURL)
     pages_num = int(defaultHtml.body.find('nav', {'class': 'pagination cf'}).find_all('span')[-1].get_text(' ', strip=True))
+    print(pages_num)
     threads = []
     nb_threads = 10
     pages_per_thread = pages_num // nb_threads - 1
@@ -122,22 +109,19 @@ def getDataFromMoviePage(url):
     disable_buttons = [b.div.get_text(' ', strip=True) for b in html.body.find_all('span', {'class': 'item js-item-mq inactive'})]
     reviews_press_enable = 'Critiques presse' not in disable_buttons
     reviews_people_enable = 'Critiques spectateurs' not in disable_buttons
-  #  press_reviews = None if not reviews_press_enable else getPressCommentsFromPage(critique_press_url(movie_id))
-    spectators_reviews = None if not reviews_people_enable else getSpectateursCommentsFromPage(critique_spectateurs_url(movie_id))
+    press_reviews = None if not reviews_press_enable else getPressCommentsFromPage(critique_press_url(movie_id))
+    spectators_reviews = "" if not reviews_people_enable else getSpectateursCommentsFromPage(critique_spectateurs_url(movie_id))
 
     json_dic = {'id': movie_id,
                 'title': movie_title,
                 'date': movie_date,
                 'director': movie_director,
-      #          'press_reviews': press_reviews,
+              #  'press_reviews': press_reviews,
                 'spectators_reviews': spectators_reviews
                 }
 
     return json_dic
-import urllib3
-import json
-from threading import Thread, RLock
-from bs4 import BeautifulSoup
+
 
 class ThreadedRequest(Thread):
     def __init__(self, urls, outfile):
@@ -150,39 +134,22 @@ class ThreadedRequest(Thread):
         for url in self.urls:
             dic = getDataFromMoviePage(url)
             with lock:
-                json.dump(dic, self.outfile, ensure_ascii=False)
-                self.outfile.write('\n')
+                producer = KafkaProducer(bootstrap_servers='localhost:9092')
+
+                json.dump(dic, outfile, ensure_ascii=False)
+                print(dic)
+                producer.send("my-topic", json.dumps(dic, ensure_ascii=False))
+                outfile.write('\n')
                 print(i)
                 i += 1
 
-def getAllocineInMovies():
-    urls = loadURLs()[:1000]
-    outfile = open('movies.json', 'w')
-    threads = [ThreadedRequest(urls[(i * 100):(i + 1) * 100], outfile) for i in range(10)]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-class Producer(threading.Thread):
-    daemon = True
-
-    def run(self):
-        print("Producer begin") # IP CLara
-        producer = KafkaProducer(bootstrap_servers='localhost:9092')
-        getAllocineInMovies()
-        for line in open('movies.json', 'r'):
-            producer.send("my-topic", line)
-            print("Produced ", line)
-        print("Data produced")
-
-        producer.flush()
-        producer.close()
-
-print("Producer lancer")
-Producer().run()
-logging.basicConfig(
-        format='%(name)s:%(thread)d:%(process)d:%(message)s',
-        level=logging.INFO)
 
 
-print("End")
+# getMoviesUrls()
+urls = loadURLs()[:1000]
+outfile = open('movies.json', 'w')
+threads = [ThreadedRequest(urls[(i * 100):(i + 1) * 100], outfile) for i in range(10)]
+for thread in threads:
+    thread.start()
+for thread in threads:
+    thread.join()

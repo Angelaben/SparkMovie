@@ -56,7 +56,7 @@ class Analyzer(multiprocessing.Process):
 
         print("Analyzer begin")
 #        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-        consumer = KafkaConsumer(bootstrap_servers='localhost:9092','37.163.95.205',
+        consumer = KafkaConsumer(bootstrap_servers='37.163.95.205',
                                      auto_offset_reset='earliest', consumer_timeout_ms=10000)
         consumer.subscribe(['my-topic'])
         print("Subscription analyzer: OK")
