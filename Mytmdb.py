@@ -307,6 +307,7 @@ class Analyzer(multiprocessing.Process):
         for data in moviesList:
             if (debug):
                 print("dataAnalyzer to send ", data)
+                data['spectators_reviews'] = "" # Supprime les reviews pour pas s'embeter
                 producer.send("my-ratings", json.dumps(data))
             print("Sent")
         producer.flush()

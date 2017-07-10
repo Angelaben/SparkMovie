@@ -7,7 +7,7 @@ object AlloUtils  {
                      title:     String,
                      ownRating : Option[Int],
                      director : Option[String],
-                     spectators_reviews:             Option[List[Option[String]]],
+                     spectators_reviews:            Option[String],
                      date : Option[String],
                      id : Option[String]
                    ) extends java.io.Serializable
