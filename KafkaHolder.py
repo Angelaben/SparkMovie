@@ -10,7 +10,7 @@ class Producer(threading.Thread):
     daemon = True
 
     def run(self):
-        producer = KafkaProducer(bootstrap_servers='localhost:9092')
+        producer = KafkaProducer(bootstrap_servers='163.5.220.83:9092')
         if debug :
             while True:
                 producer.send('my-topic', b"test")
@@ -23,7 +23,7 @@ class Consumer(multiprocessing.Process):
     daemon = True
 
     def run(self):
-        consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
+        consumer = KafkaConsumer(bootstrap_servers='163.5.220.83:9092',
                                  auto_offset_reset='earliest')
         consumer.subscribe(['my-topic'])
 

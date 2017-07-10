@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.classify import NaiveBayesClassifier
@@ -217,8 +216,8 @@ class Producer(threading.Thread):
     daemon = True
 
     def run(self):
-        print("Producer begin") # IP CLara
-        producer = KafkaProducer(bootstrap_servers='localhost:9092')
+        print("Producer begin")
+        producer = KafkaProducer(bootstrap_servers='163.5.220.83:9092')
 
         for data in moviesList :
             if(debug):
@@ -241,7 +240,7 @@ class Consumer(multiprocessing.Process):
 
       #  consumer = KafkaConsumer(bootstrap_servers = '37.163.95.205',
         consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
-                                  group_id='StarPlatinium',
+                                 group_id='StarPlatinium',
                                  auto_offset_reset='earliest', consumer_timeout_ms = 100 )
         consumer.subscribe(['my-topic'])
         self.retrievedData = []
@@ -305,7 +304,7 @@ class Analyzer(multiprocessing.Process):
                 else :
                     jsoned['ownRating'] = 0
                 moviesList.append(jsoned)
-        producer = KafkaProducer(bootstrap_servers='localhost:9092')
+        producer = KafkaProducer(bootstrap_servers='163.5.220.83:9092')
 
 
         for data in moviesList:
