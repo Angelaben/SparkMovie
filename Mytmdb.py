@@ -233,10 +233,13 @@ class Producer(threading.Thread):
 class Consumer(multiprocessing.Process):
     daemon = True
 
+    def __init__(self, id):
+        self.ID = id
     def run(self):
 
-        print("Consumer begin")
+        print("Consumer begin ",self.ID)
         consumer = KafkaConsumer(bootstrap_servers='localhost:9092',
+                                 group_id='StarPlatinium',
                                  auto_offset_reset='earliest', consumer_timeout_ms = 100 )
         consumer.subscribe(['my-topic'])
         self.retrievedData = []
@@ -248,7 +251,7 @@ class Consumer(multiprocessing.Process):
                 msg = json.loads(message.value)
                 self.retrievedData.append(msg)
                 if debug:
-                    print("Title received :  %s" % (msg['title']))
+                    print("Title received : ", msg['title'], " with id ",self.ID)
                 self.nb_elements += 1
             except Exception as err:
                 print("Error ", err)
@@ -309,12 +312,18 @@ class Analyzer(multiprocessing.Process):
         producer.close()
         print("DataAnalyse produced")
 
-
+tasks = [
+    Producer(),
+    Consumer(1),
+    Consumer(2),
+    Analyzer()
+]
 ######################## MAIN PART ############################
-
-Producer().run()
-Consumer().run()
-Analyzer().run()
+for t in tasks :
+    t.run()
+#Producer().run()
+#Consumer().run()
+#Analyzer().run()
 
 
 
