@@ -54,13 +54,11 @@ object Main {
     println("Start")
     val topics : util.List[String] = new util.ArrayList[String]()
     topics.add("my-rating")
-    //topics.add("my-topic")
     consumer.subscribe(topics)
   }
 
   def toBeginning() = {
     val top = new util.ArrayList[TopicPartition]()
-    //top.add(new TopicPartition("my-topic", 2))
     top.add(new TopicPartition("my-rating", 2))
     consumer.seekToBeginning(top)
   }

@@ -17,7 +17,7 @@ from nltk.sentiment import SentimentAnalyzer
 from kafka import KafkaConsumer, KafkaProducer
 
 debug = True
-importer = True
+importer = False
 allocine = False
 ##################### PARTIE PARSING DE DONNEE ET TRAITEMENT  : TMDB    #############################
 def retrieveData(n, path):
@@ -278,7 +278,7 @@ class Analyzer(multiprocessing.Process):
                 from textblob_fr import PatternTagger, PatternAnalyzer
                 if (jsoned['spectators_reviews']):
                     note = 0
-                    nbNote = 0
+                    nbNote = 1
                     for elem in jsoned['spectators_reviews']:
                         blob = TextBlob(elem, pos_tagger=PatternTagger(), analyzer=PatternAnalyzer())
                         note += blob.sentiment[0]
