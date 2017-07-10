@@ -1,8 +1,7 @@
 package test.lol
-import test.lol.AlloUtils
-import test.lol.MovieUtils._
+
+import test.lol.AlloUtils._
 import test.lol.RatingUtils._
-//import test.lol.NewFile
 import scala.collection.JavaConversions._
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.{SparkConf, SparkContext}
@@ -17,9 +16,7 @@ import java.util.Properties
 import kafka.utils.Logging
 import scala.collection.JavaConversions._
 import java.util
-import org.apache.hadoop.io._
-import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
-import org.apache.hadoop.fs.FileSystem
+
 import org.apache.kafka.clients.consumer.{ConsumerConfig, KafkaConsumer, ConsumerRecord}
 import org.apache.kafka.clients.consumer
 import org.apache.kafka.common.TopicPartition
@@ -65,53 +62,76 @@ object Main {
     consumer.seekToBeginning(top)
   }
 
-  def Toshow() = {
+  def Toshow(source: String) = {
     println("Show")
-    val conf = new SparkConf().setAppName("testdelamortquitue").setMaster("local[*]")
+    val conf = new SparkConf().setAppName("Movie reviews").setMaster("local[*]")
     val sc = SparkContext.getOrCreate(conf)
+    new File("testFile.txt").delete()
 
-   new File("testFile.txt").delete()
-   while (true) {
-     var hasWritten = false
-     var fileWriter = new FileWriter("testFile.txt", true)
-     println("Listening - scala ")
+    while (true) {
+      var hasWritten = false
+      var fileWriter = new FileWriter("testFile.txt", true)
+      println("Listening - scala ")
 
-     val records = consumer.poll(1000)
-     //var text = ""
-     //val it = records.records("my-topic").iterator()
-     val it = records.records("my-ratings").iterator()
-     while (it.hasNext) {
-       hasWritten = true
-       val record = it.next()
-       fileWriter.write(record.value())
-       fileWriter.write("\n")
+      val records = consumer.poll(1000)
+      val it = records.records("my-ratings").iterator()
+      while (it.hasNext) {
+        hasWritten = true
+        val record = it.next()
+        fileWriter.write(record.value())
+        fileWriter.write("\n")
+      }
 
+      fileWriter.flush()
+      fileWriter.close()
+      Thread.sleep(1000)
 
-     }
+      if (hasWritten == true && new File("testFile.txt").length() != 0) {
+        println ("parsing:")
 
+        if (source == "allo") {
+          var rdd = sc.textFile("testFile.txt")
+                      .flatMap(StringToAllo)
+          rdd.repartition(1).saveAsTextFile("hdfs" + rdd.hashCode())
 
-     fileWriter.flush()
-     fileWriter.close()
-     Thread.sleep(1000)
+        }
+        else {
+          var rdd = sc.textFile("testFile.txt")
+                      .flatMap(StringToRating)
+          rdd.repartition(1).saveAsTextFile("hdfs" + rdd.hashCode())
+        }
+        println("GOOD")
+      }
 
-     if (new File("testFile.txt").length() != 0 && hasWritten == true) {
-       println ("parsing:")
-       val rdd = sc.textFile("testFile.txt")
-         .flatMap(AlloUtils.StringToAllo)
-       //rdd.saveAsTextFile("hdfs")
-       rdd.repartition(1).saveAsTextFile("hdfs" + rdd.hashCode())
-         println("GOOD")
-     }
-
-
-   }
+    }
   }
 
+    /* USAGE
+     * sbt "run arg1"
+     * arg1: [ allo | tmdb ]
+     */
   def main(args: Array[String]): Unit = {
     println("babidoo")
-    start()
-    //toBeginning()
-    Toshow()
+
+    if (args.length() == 1) {
+      start()
+
+      if (args(0) == "allo") {
+        println("AlloCiné")
+        ToShow("allo")
+      }
+      else if (args(0) == "tmdb") {
+        println("TMDB")
+        //toBeginning()
+        ToShow("tmdb")
+      }
+    }
+    else
+      println()
+      println("USAGE")
+      println("sbt \"run arg1 arg2\"")
+      println("arg1: [ allo | tmdb ]")
+      println()
   }
 
 }
